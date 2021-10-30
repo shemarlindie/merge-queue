@@ -176,7 +176,6 @@ export function QueueItemEditDialog({onClose, open, queue, doc}: QueueItemEditDi
               label="MR Link"
               variant="outlined"
               margin="normal"
-              autoFocus={!doc}
               fullWidth
               error={!!formik.errors.mrLink}
               helperText={formik.errors.mrLink}
@@ -189,7 +188,6 @@ export function QueueItemEditDialog({onClose, open, queue, doc}: QueueItemEditDi
               label="Scribe MR Link"
               variant="outlined"
               margin="normal"
-              autoFocus={!doc}
               fullWidth
               error={!!formik.errors.mrLink2}
               helperText={formik.errors.mrLink2}
