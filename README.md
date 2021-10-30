@@ -1,3 +1,21 @@
+## Deploy Checklist
+#### Firebase:
+- Create firebase project (pay-as-you-go)
+- Enable cloud firestore, cloud functions
+- Create app in firebase project
+- Set firebase project id in `firebase/.firebaserc`
+- Set up sendgrid account with sender authentication
+- Create sendgrid api key
+- Set sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
+- Set "from" email `firebase functions:config:set sendgrid.from=<from email address>`
+- Deploy to firebase: `cd ./firebase && firebase deploy`
+
+#### Web:
+- Setup `.env` based on `.env.example` with firebase app variables
+- Build `npm build`
+- Deploy `./dist` to web server
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
