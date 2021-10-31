@@ -15,6 +15,10 @@
 - Build `npm build`
 - Deploy `./dist` to web server
 
+#### Dev
+- Setup function emulation config file (`.runtimeconfig.json`) in `firebase/functions` using `.runtimeconfig.example.json`
+- Start emulators: `firebase emulators:start`
+
 
 # Getting Started with Create React App
 

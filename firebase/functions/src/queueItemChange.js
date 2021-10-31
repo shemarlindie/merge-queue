@@ -2,6 +2,10 @@ const functions = require("firebase-functions");
 const firestore = functions.firestore;
 const path = require("path");
 const Email = require("email-templates");
+
+const admin = require("firebase-admin");
+admin.initializeApp()
+
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(functions.config().sendgrid.key);
 
@@ -46,6 +50,10 @@ const watchedFields = {
   type: {comparer: typeComparer, formatter: typeFormatter},
 };
 
+const getLatestChange = (change) => {
+  return change.after.data() || change.before.data();
+};
+
 const getChangeType = (change) => {
   const created = !change.before.data();
   const deleted = !change.after.data();
@@ -76,13 +84,14 @@ const computeChangedFields = (change) => {
   return changed;
 };
 
-const getChangedFields = (change) => {
+const getChangedFields = async (change) => {
   const fields = computeChangedFields(change);
 
   if (fields.length) {
     const changeType = getChangeType(change);
-    const latest = change.after.data() || change.before.data();
-    const changedFields = {fields, changeType, latest, before: {}, after: {}};
+    const latest = getLatestChange(change);
+    const queue = await admin.firestore().doc(`queues/${latest.queueId}`).get();
+    const changedFields = {fields, changeType, queue: queue.data(), latest, before: {}, after: {}};
     for (const key of fields) {
       changedFields.before[key] = change.before.get(key);
       changedFields.after[key] = change.after.get(key);
@@ -149,9 +158,11 @@ const prepareEmailBody = async (changedFields, htmlDiff, textDiff) => {
   return body;
 };
 
-const getRecipients = (change) => {
+const getRecipients = (queue, change) => {
   const recipientFields = ["developer", "reviewer", "qaAssignee"];
   const recipients = new Set();
+
+  // get recipients from changed task
   for (const field of recipientFields) {
     const after = change.after.data();
     const before = change.before.data();
@@ -166,47 +177,66 @@ const getRecipients = (change) => {
       }
     }
   }
+  console.log(`Found ${recipients.size} recipient(s) in task.`);
+
+  // get recipients from queue watchers
+  const watchers = queue.watchers || []
+  for (const user of watchers) {
+    if (user && user.email) {
+      recipients.add(user.email);
+    }
+  }
+  console.log(`Found ${watchers.length} queue watcher(s).`);
 
   return Array.from(recipients);
 };
 
 const sendEmail = async (change) => {
-  const recipients = getRecipients(change);
-  if (recipients.length) {
-    const changedFields = getChangedFields(change);
-    if (changedFields) {
+  const changedFields = await getChangedFields(change);
+  if (changedFields) {
+    if (changedFields.queue) {
       console.log(`[${changedFields.latest.id}] CHANGED FIELDS`, JSON.stringify(changedFields.fields));
-      console.log(`[${changedFields.latest.id}] Sending email update to ${recipients.length} users.`);
-      const {created, updated, deleted} = changedFields.changeType;
-      const task = changedFields.latest;
-      const htmlDiff = prepareHtmlDiff(changedFields);
-      const textDiff = prepareTextDiff(changedFields);
-      const body = await prepareEmailBody(changedFields, htmlDiff, textDiff);
-      const from = `Merge Queue <${functions.config().sendgrid.from}>`;
-      const subject = `${task.ticketNumber ? task.ticketNumber + " | " : ""}Merge Task ${created ? "Created" : updated ? "Updated" : deleted ? "Deleted" : "Changed"}`;
-      const messages = [];
-      for (const email of recipients) {
-        messages.push({
-          to: email,
-          from: from,
-          subject: subject,
-          text: body.text,
-          html: body.html,
-        });
-      }
-      return sgMail
-        .send(messages, true).then(res => {
-          console.log("EMAIL STATUS", res.toString());
-          return res;
-        })
-        .catch((e) => {
-          console.error("ERROR SENDING EMAIL", e);
+      const recipients = getRecipients(changedFields.queue, change);
+      if (recipients.length) {
+        console.log(`[${changedFields.latest.id}] Sending notification to ${recipients.length} user(s).`);
+        const {created, updated, deleted} = changedFields.changeType;
+        const task = changedFields.latest;
+        const htmlDiff = prepareHtmlDiff(changedFields);
+        const textDiff = prepareTextDiff(changedFields);
+        const body = await prepareEmailBody(changedFields, htmlDiff, textDiff);
+        const from = `Merge Queue <${functions.config().sendgrid.from}>`;
+        const subject = `${task.ticketNumber ? task.ticketNumber + " | " : ""}Merge Task ${created ? "Created" : updated ? "Updated" : deleted ? "Deleted" : "Changed"}`;
+        const messages = [];
+        for (const email of recipients) {
+          messages.push({
+            to: email,
+            from: from,
+            subject: subject,
+            text: body.text,
+            html: body.html,
+          });
+        }
+        return sgMail
+          .send(messages, true).then(res => {
+            console.log("EMAIL STATUS", res.toString());
+            return res;
+          })
+          .catch((e) => {
+            console.error("ERROR SENDING EMAIL", e);
 
-          return e;
-        });
-    } else {
-      console.log("No changed fields.");
+            return e;
+          });
+      }
+      else {
+        console.log("No notification recipients.");
+      }
     }
+    else {
+      console.log("Queue no longer exists. Skipping notifications.");
+    }
+  }
+  else {
+    console.log("No changed fields.");
   }
 
   return true;
