@@ -9,6 +9,8 @@ admin.initializeApp()
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(functions.config().sendgrid.key);
 
+const notificationsEnabled = functions.config().notificationsEnabled
+
 const userFormatter = (user) => {
   return user ? user.displayName : "-";
 };
@@ -243,7 +245,14 @@ const sendEmail = async (change) => {
 };
 
 const hook = (change) => {
-  return sendEmail(change);
+  if (notificationsEnabled) {
+    return sendEmail(change);
+  }
+  else {
+    console.log("Notifications are disabled.");
+  }
+
+  return true
 };
 
 const queueItemChange = firestore

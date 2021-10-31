@@ -2,5 +2,6 @@
   "sendgrid": {
     "key": "<sendgrid api key>",
     "from": "<from email address>"
-  }
+  },
+  "notificationsEnabled": true
 }
