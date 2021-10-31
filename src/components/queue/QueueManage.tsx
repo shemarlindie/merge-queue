@@ -26,7 +26,7 @@ export function QueueManage() {
         <Typography color="text.primary">{queue?.name || queueId}</Typography>
       </LayoutBreadcrumbs>
 
-      {!docLoading && doc && (
+      {!docLoading && doc && queue && (
         <QueueManageHeader doc={doc}/>
       )}
 
@@ -50,7 +50,7 @@ export function QueueManage() {
         )}
       </div>
 
-      {!docLoading && doc && <QueueTable queue={doc}/>}
+      {!docLoading && doc && queue && <QueueTable queue={doc}/>}
     </div>
   )
 }

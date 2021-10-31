@@ -286,6 +286,7 @@ export function QueueItemEditDialog({onClose, open, queue, doc}: QueueItemEditDi
             variant="outlined"
             margin="normal"
             rows={2}
+            required
             multiline
             fullWidth
             error={!!formik.errors.description}

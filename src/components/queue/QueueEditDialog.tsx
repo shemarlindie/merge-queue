@@ -84,6 +84,7 @@ export function QueueEditDialog({onClose, open, doc}: QueueEditDialogProps) {
     name: '',
     description: '',
     clients: [],
+    watchers: [],
     sections: [],
     members: auth.currentUser ? [makeUserProxy(auth.currentUser)] : [],
   }
@@ -225,14 +226,39 @@ export function QueueEditDialog({onClose, open, doc}: QueueEditDialogProps) {
               <TextField
                 {...params}
                 name="members"
-                label="Queue Members"
+                label="Members"
                 placeholder="Search and add multiple members..."
                 margin="normal"
+                helperText="Members can be assigned tasks in queue."
               />
             )}
             isOptionEqualToValue={(option, value) => option.uid === value.uid}
             value={formik.values.members}
             onChange={(e, val) => formik.setFieldValue('members', val)}
+          />
+
+          <Autocomplete
+            options={users}
+            getOptionLabel={(option) => option.displayName || ''}
+            multiple
+            filterSelectedOptions
+            disableCloseOnSelect
+            disableClearable
+            openOnFocus
+            autoHighlight
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="watchers"
+                label="Watchers"
+                placeholder="Search and add multiple watchers..."
+                margin="normal"
+                helperText="Watchers receive notifications for all tasks (whether they are assigned or not)."
+              />
+            )}
+            isOptionEqualToValue={(option, value) => option.uid === value.uid}
+            value={formik.values.watchers}
+            onChange={(e, val) => formik.setFieldValue('watchers', val)}
           />
 
           <Autocomplete
@@ -247,6 +273,7 @@ export function QueueEditDialog({onClose, open, doc}: QueueEditDialogProps) {
                 label="Clients"
                 placeholder="Type a name then press ENTER to add..."
                 margin="normal"
+                helperText="A list of clients available for selection in tasks."
               />
             )}
             value={formik.values.clients}

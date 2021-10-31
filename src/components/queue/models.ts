@@ -185,6 +185,7 @@ export class Queue {
     public clients: string[] = [],
     public sections: QueueSection[] = [],
     public members: UserProxy[] = [],
+    public watchers: UserProxy[] = [],
   ) {
   }
 

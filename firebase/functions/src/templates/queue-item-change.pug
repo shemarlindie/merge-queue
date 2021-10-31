@@ -4,18 +4,18 @@ link(rel="stylesheet", href="styles/main.css", data-inline)
 
 body(style={padding: "1rem"})
   - var task = changedFields.latest
+  - var queue = changedFields.queue
   - var created = changedFields.changeType.created
   - var updated = changedFields.changeType.updated
   - var deleted = changedFields.changeType.deleted
 
   if task.ticketNumber
-    p The merge task for #[b #{task.ticketNumber}] was #{created ? "created" : deleted ? "deleted" : "updated"}.
+    p The merge task for #[b #{task.ticketNumber}] was #{created ? "created in" : deleted ? "deleted from" : "updated in"} #[i #{queue.name}].
   else
-    p The following merge task was #{created ? "created" : deleted ? "deleted" : "updated"}.
+    p The following merge task was #{created ? "created in" : deleted ? "deleted from" : "updated in"} #[i #{queue.name}].
 
   h2(style={"margin-bottom": 0}) #{task.ticketNumber}
-  p(style={"margin-top": 0})
-    i #{task.description}
+  p(style={"margin-top": 0}) #{task.description}
 
   table.table(style={"max-width": "37.5rem"})
     thead
