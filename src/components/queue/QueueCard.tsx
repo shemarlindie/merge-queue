@@ -1,4 +1,4 @@
-import { Queue } from "./models";
+import {Queue} from "./models";
 import {
   Button,
   Card,
@@ -10,16 +10,15 @@ import {
   MenuItem,
   Typography
 } from "@mui/material";
-import { QueueEditDialog } from "./QueueEditDialog";
-import React, { useMemo, useState } from "react";
-import { deleteDoc, DocumentSnapshot } from "firebase/firestore";
-import { BsThreeDotsVertical, MdDelete, MdEdit } from "react-icons/all";
-import { useTruncate } from "../../utils/useTruncate";
-import { Link as RouterLink } from "react-router-dom";
+import {QueueEditDialog} from "./QueueEditDialog";
+import React, {useState} from "react";
+import {deleteDoc} from "firebase/firestore";
+import {BsThreeDotsVertical, MdDelete, MdEdit} from "react-icons/all";
+import {useTruncate} from "../../utils/useTruncate";
+import {Link as RouterLink} from "react-router-dom";
 
-export function QueueCard({doc}: { doc: DocumentSnapshot<Queue> }) {
+export function QueueCard({queue}: { queue: Queue }) {
   const [showEditDialog, setShowEditDialog] = useState(false);
-  const queue = useMemo(() => doc.data()!, [doc])
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.UIEvent<HTMLElement>) => {
@@ -32,7 +31,7 @@ export function QueueCard({doc}: { doc: DocumentSnapshot<Queue> }) {
 
   const handleEditClick = () => {
     setShowEditDialog(true);
-    handleMenuClose()
+    handleMenuClose();
   };
 
   const handleEditDialogClose = () => {
@@ -40,8 +39,8 @@ export function QueueCard({doc}: { doc: DocumentSnapshot<Queue> }) {
   };
 
   const handleDeleteClick = () => {
-    deleteDoc(doc.ref)
-    handleMenuClose()
+    deleteDoc(queue.documentRef());
+    handleMenuClose();
   };
 
   return (
@@ -60,13 +59,13 @@ export function QueueCard({doc}: { doc: DocumentSnapshot<Queue> }) {
             <Menu
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
+                vertical: "bottom",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
@@ -80,14 +79,14 @@ export function QueueCard({doc}: { doc: DocumentSnapshot<Queue> }) {
       />
       <CardContent className="flex-grow-1">
         <Typography variant="body2">
-          {useTruncate(queue?.description || '', 65)}
+          {useTruncate(queue?.description || "", 65)}
         </Typography>
       </CardContent>
       <CardActions className="d-flex flex-row justify-content-center justify-content-md-end">
-        <Button component={RouterLink} to={`/queues/${doc.id}`}>Manage Queue</Button>
+        <Button component={RouterLink} to={`/queues/${queue.id}`}>Manage Queue</Button>
       </CardActions>
 
-      {showEditDialog && <QueueEditDialog open={showEditDialog} onClose={handleEditDialogClose} doc={doc}/>}
+      {showEditDialog && <QueueEditDialog open={showEditDialog} onClose={handleEditDialogClose} queue={queue}/>}
     </Card>
-  )
+  );
 }

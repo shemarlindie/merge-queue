@@ -50,7 +50,6 @@ export function QueueTableGroupConfig({config, section, onChange}: QueueTableGro
         Group by
       </Button>
       <Menu
-        id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'bottom',

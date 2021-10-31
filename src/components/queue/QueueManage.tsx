@@ -1,17 +1,16 @@
-import { Link as RouterLink, useParams } from "react-router-dom";
-import { LayoutBreadcrumbs } from "../layout/LayoutBreadcrumbs";
-import { CircularProgress, Link, Typography } from "@mui/material";
-import { useDocument } from "react-firebase9-hooks/firestore";
-import { Queue } from "./models";
-import { QueueManageHeader } from "./QueueManageHeader";
-import { QueueTable } from "./QueueTable";
+import {Link as RouterLink, useParams} from "react-router-dom";
+import {LayoutBreadcrumbs} from "../layout/LayoutBreadcrumbs";
+import {CircularProgress, Link, Typography} from "@mui/material";
+import {useDocumentData} from "react-firebase9-hooks/firestore";
+import {Queue} from "./models";
+import {QueueManageHeader} from "./QueueManageHeader";
+import {QueueTable} from "./QueueTable";
 
 export function QueueManage() {
-  const params = useParams()
-  const queueId = params.queueId as string || ''
+  const params = useParams();
+  const queueId = params.queueId as string || "";
 
-  const [doc, docLoading, docError] = useDocument(Queue.documentRef(queueId))
-  const queue = doc?.data()
+  const [queue, loading, error] = useDocumentData(Queue.documentRef(queueId));
 
   return (
     <div>
@@ -26,31 +25,31 @@ export function QueueManage() {
         <Typography color="text.primary">{queue?.name || queueId}</Typography>
       </LayoutBreadcrumbs>
 
-      {!docLoading && doc && queue && (
-        <QueueManageHeader doc={doc}/>
+      {!loading && queue && (
+        <QueueManageHeader queue={queue}/>
       )}
 
       <div>
-        {docError && (
+        {error && (
           <div className="p-3">
-            <Typography>Error loading queue: <span>{docError}</span></Typography>
+            <Typography>Error loading queue: <span>{error}</span></Typography>
           </div>
         )}
 
-        {docLoading && (
+        {loading && (
           <div className="text-center p-3">
             <CircularProgress thickness={1}/>
           </div>
         )}
 
-        {!docLoading && !queue && (
+        {!loading && !queue && (
           <div className="text-center p-3">
             <Typography>Queue not found.</Typography>
           </div>
         )}
       </div>
 
-      {!docLoading && doc && queue && <QueueTable queue={doc}/>}
+      {!loading && queue && <QueueTable queue={queue}/>}
     </div>
-  )
+  );
 }

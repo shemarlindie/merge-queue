@@ -1,34 +1,34 @@
-import { DocumentSnapshot, query, where } from "firebase/firestore";
-import { Queue, QueueItem, QueueSection, statusList } from "./models";
-import { AppBar, TableCell, TableRow, Toolbar, Typography } from "@mui/material";
-import { QueueTableRowsGrouped } from "./QueueTableRowsGrouped";
-import React, { ReactElement, useState } from "react";
-import { makeGroupConfig, QueueTableGroupConfig } from "./QueueTableGroupConfig";
-import { QueueItemTableConfig } from "./QueueTable";
+import {query, where} from "firebase/firestore";
+import {Queue, QueueItem, QueueSection, statusList} from "./models";
+import {AppBar, TableCell, TableRow, Toolbar, Typography} from "@mui/material";
+import {QueueTableRowsGrouped} from "./QueueTableRowsGrouped";
+import React, {ReactElement, useState} from "react";
+import {makeGroupConfig, QueueTableGroupConfig} from "./QueueTableGroupConfig";
+import {QueueItemTableConfig} from "./QueueTable";
 
 export interface QueueSectionRowsProps {
-  queue: DocumentSnapshot<Queue>,
+  queue: Queue,
   tableConfig: QueueItemTableConfig[],
 }
 
 export function QueueTableRows({queue, tableConfig}: QueueSectionRowsProps) {
-  const sections = queue.data()?.sections || []
-  const rows: ReactElement[] = []
-  const [groupConfig, setGroupConfig] = useState(makeGroupConfig(sections))
+  const sections = queue.sections || [];
+  const rows: ReactElement[] = [];
+  const [groupConfig, setGroupConfig] = useState(makeGroupConfig(sections));
 
   const handleChangeGroupConfig = (section: QueueSection, groupBy: keyof QueueItem) => {
     setGroupConfig({
       ...groupConfig,
       [section.name]: groupBy
-    })
-  }
+    });
+  };
 
   sections.forEach((section) => {
     const colRef = query(
       QueueItem.collectionRef(queue.id),
-      where('section', '==', section.name),
-      where('status', '!=', statusList[statusList.length - 1]),
-    )
+      where("section", "==", section.name),
+      where("status", "!=", statusList[statusList.length - 1]),
+    );
     rows.push(
       <TableRow key={section.name}>
         <TableCell padding="none" colSpan={tableConfig.length}>
@@ -45,13 +45,13 @@ export function QueueTableRows({queue, tableConfig}: QueueSectionRowsProps) {
           </AppBar>
         </TableCell>
       </TableRow>
-    )
+    );
 
     rows.push(
-      <QueueTableRowsGrouped key={section.name + '-group'} queue={queue} collectionRef={colRef}
+      <QueueTableRowsGrouped key={section.name + "-group"} queue={queue} collectionRef={colRef}
                              groupBy={groupConfig[section.name]} tableConfig={tableConfig}/>
-    )
-  })
+    );
+  });
 
-  return <>{rows}</>
+  return <>{rows}</>;
 }
