@@ -1,15 +1,13 @@
-import { Queue } from "./models";
-import { Button, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { MdPostAdd, MdSettings } from "react-icons/all";
-import { QueueEditDialog } from "./QueueEditDialog";
-import { useState } from "react";
-import { DocumentSnapshot } from "firebase/firestore";
-import { QueueItemEditDialog } from "./QueueItemEditDialog";
+import {Queue} from "./models";
+import {Button, Typography, useMediaQuery, useTheme} from "@mui/material";
+import {MdPostAdd, MdSettings} from "react-icons/all";
+import {QueueEditDialog} from "./QueueEditDialog";
+import {useState} from "react";
+import {QueueItemEditDialog} from "./QueueItemEditDialog";
 
-export function QueueManageHeader({doc}: { doc: DocumentSnapshot<Queue> }) {
-  const theme = useTheme()
-  const screenSm = useMediaQuery(theme.breakpoints.up('sm'))
-  const queue = doc.data() as Queue
+export function QueueManageHeader({queue}: { queue: Queue }) {
+  const theme = useTheme();
+  const screenSm = useMediaQuery(theme.breakpoints.up("sm"));
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [showQueueItemEditDialog, setShowQueueItemEditDialog] = useState(false);
 
@@ -55,9 +53,9 @@ export function QueueManageHeader({doc}: { doc: DocumentSnapshot<Queue> }) {
         </Button>
       </div>
 
-      {showEditDialog && <QueueEditDialog open={showEditDialog} doc={doc} onClose={handleEditDialogClose}/>}
+      {showEditDialog && <QueueEditDialog open={showEditDialog} queue={queue} onClose={handleEditDialogClose}/>}
       {showQueueItemEditDialog &&
-      <QueueItemEditDialog open={showQueueItemEditDialog} queue={doc} onClose={handleQueueItemEditDialogClose}/>}
+      <QueueItemEditDialog open={showQueueItemEditDialog} queue={queue} onClose={handleQueueItemEditDialogClose}/>}
     </div>
-  )
+  );
 }

@@ -1,14 +1,14 @@
-import { useCollection } from "react-firebase9-hooks/firestore";
-import { QueueCard } from "./QueueCard";
-import { Button, CircularProgress, Typography } from "@mui/material";
-import { BsPlus } from "react-icons/all";
-import { useState } from "react";
-import { QueueEditDialog } from "./QueueEditDialog";
-import { LayoutBreadcrumbs } from "../layout/LayoutBreadcrumbs";
-import { Queue } from "./models";
+import {useCollectionData} from "react-firebase9-hooks/firestore";
+import {QueueCard} from "./QueueCard";
+import {Button, CircularProgress, Typography} from "@mui/material";
+import {BsPlus} from "react-icons/all";
+import {useState} from "react";
+import {QueueEditDialog} from "./QueueEditDialog";
+import {LayoutBreadcrumbs} from "../layout/LayoutBreadcrumbs";
+import {Queue} from "./models";
 
 export function QueueList() {
-  const [queueCollection, loading, error] = useCollection(Queue.collectionRef())
+  const [queueList, loading, error] = useCollectionData(Queue.collectionRef());
   const [showEditDialog, setShowEditDialog] = useState(false);
 
   const handleEditDialogOpen = () => {
@@ -48,16 +48,16 @@ export function QueueList() {
             <CircularProgress thickness={1}/>
           </div>
         )}
-        {!loading && queueCollection && (
+        {!loading && queueList && (
           <div
             className="d-flex flex-sm-wrap flex-sm-row justify-content-sm-center align-items-sm-start flex-nowrap flex-column justify-content-start align-items-center">
-            {queueCollection.docs.map((doc) => <QueueCard key={doc.id} doc={doc}/>)}
+            {queueList.map((queue) => <QueueCard key={queue.id} queue={queue}/>)}
           </div>
         )}
-        {!loading && !queueCollection && (
+        {!loading && !queueList && (
           <div className="text-center">No queues yet.</div>
         )}
       </div>
     </div>
-  )
+  );
 }
