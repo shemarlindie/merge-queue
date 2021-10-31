@@ -13,3 +13,11 @@ body {
     background: #e6ffe6;
     text-decoration: none;
 }
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}

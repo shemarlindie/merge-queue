@@ -149,27 +149,53 @@ const prepareEmailBody = async (changedFields, htmlDiff, textDiff) => {
   return body;
 };
 
+const getRecipients = (change) => {
+  const recipientFields = ["developer", "reviewer", "qaAssignee"];
+  const recipients = new Set();
+  for (const field of recipientFields) {
+    const after = change.after.data();
+    const before = change.before.data();
+    if (after) {
+      if (after[field] && after[field].email) {
+        recipients.add(after[field].email);
+      }
+    }
+    if (before) {
+      if (before[field] && before[field].email) {
+        recipients.add(before[field].email);
+      }
+    }
+  }
+
+  return Array.from(recipients);
+};
+
 const sendEmail = async (change) => {
-  const user = change.before.data().developer || change.after.data().developer;
-  if (user && user.email) {
+  const recipients = getRecipients(change);
+  if (recipients.length) {
     const changedFields = getChangedFields(change);
     if (changedFields) {
-      console.log("CHANGED FIELDS", JSON.stringify(changedFields.fields));
+      console.log(`[${changedFields.latest.id}] CHANGED FIELDS`, JSON.stringify(changedFields.fields));
+      console.log(`[${changedFields.latest.id}] Sending email update to ${recipients.length} users.`);
       const {created, updated, deleted} = changedFields.changeType;
       const task = changedFields.latest;
       const htmlDiff = prepareHtmlDiff(changedFields);
       const textDiff = prepareTextDiff(changedFields);
       const body = await prepareEmailBody(changedFields, htmlDiff, textDiff);
-      const msg = {
-        to: user.email,
-        from: `Merge Queue <${functions.config().sendgrid.from}>`,
-        subject: `${task.ticketNumber ? task.ticketNumber + " | " : ""}Merge Task ${created ? "Created" : updated ? "Updated" : deleted ? "Deleted" : "Changed"}`,
-        text: body.text,
-        html: body.html,
-      };
-
+      const from = `Merge Queue <${functions.config().sendgrid.from}>`;
+      const subject = `${task.ticketNumber ? task.ticketNumber + " | " : ""}Merge Task ${created ? "Created" : updated ? "Updated" : deleted ? "Deleted" : "Changed"}`;
+      const messages = [];
+      for (const email of recipients) {
+        messages.push({
+          to: email,
+          from: from,
+          subject: subject,
+          text: body.text,
+          html: body.html,
+        });
+      }
       return sgMail
-        .send(msg).then(res => {
+        .send(messages, true).then(res => {
           console.log("EMAIL STATUS", res.toString());
           return res;
         })
