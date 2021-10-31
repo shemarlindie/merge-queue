@@ -2,7 +2,7 @@ doctype html
 link(rel="stylesheet", href="styles/table.css", data-inline)
 link(rel="stylesheet", href="styles/main.css", data-inline)
 
-body(style={padding: "2rem"})
+body(style={padding: "1rem"})
   - var task = changedFields.latest
   - var created = changedFields.changeType.created
   - var updated = changedFields.changeType.updated
@@ -17,14 +17,14 @@ body(style={padding: "2rem"})
   p(style={"margin-top": 0})
     i #{task.description}
 
-  table.table
+  table.table(style={"max-width": "37.5rem"})
     thead
       tr
-        th(scope="col") Field
-        th(scope="col") Change
+        th.text-right(scope="col") Field
+        th.text-left(scope="col") Change
     tbody
       each change, field in htmlDiff
         tr
-          th(align="right", scope="row") #{field}
+          th.text-right(scope="row") #{field}
           td
             div.diff !{change}
