@@ -1,10 +1,10 @@
 ## Deploy Checklist
 #### Prod
 - Create firebase project (pay-as-you-go)
-- Set firebase project id in `.firebaserc`
-- Enable cloud firestore, cloud functions, hosting (visit tab)
+- Enable cloud firestore, cloud functions, hosting (visit each tab)
 - Create web app in firebase project
-- Set up `.env.local` based on `.env.example` with firebase web app config
+- Set up `.firebaserc` with firebase project id based on `.firebaserc.example`
+- Set up `.env.local` with firebase web app config based on `.env.example`
 - Set up sendgrid account with sender authentication
 - Create sendgrid api key
 - Configure sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
