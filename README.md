@@ -1,7 +1,7 @@
 ## Deploy Checklist
 #### Prod
 - Create firebase project (pay-as-you-go)
-- Enable cloud firestore, cloud functions, hosting (visit each tab)
+- Enable authentication (google provider), cloud firestore, cloud functions, hosting (visit each tab)
 - Create web app in firebase project
 - Set up `.firebaserc` with firebase project id based on `.firebaserc.example`
 - Set up `.env.local` with firebase web app config based on `.env.example`
