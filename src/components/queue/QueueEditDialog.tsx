@@ -205,8 +205,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
             label="Description"
             variant="outlined"
             margin="normal"
-            minRows={3}
-            maxRows={5}
+            rows={2}
             multiline
             fullWidth
             error={!!formik.errors.description}
