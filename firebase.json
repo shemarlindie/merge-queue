@@ -23,5 +23,20 @@
     "ui": {
       "enabled": true
     }
+  },
+  "hosting": {
+    "predeploy": "npm run build",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }
