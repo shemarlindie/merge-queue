@@ -16,10 +16,14 @@ import {deleteDoc} from "firebase/firestore";
 import {BsThreeDotsVertical, MdDelete, MdEdit} from "react-icons/all";
 import {useTruncate} from "../../utils/useTruncate";
 import {Link as RouterLink} from "react-router-dom";
+import {useConfirmDelete} from "../../utils/dialogs";
+import {useSnackbar} from "notistack";
 
 export function QueueCard({queue}: { queue: Queue }) {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const confirmDelete = useConfirmDelete();
+  const {enqueueSnackbar} = useSnackbar();
 
   const handleMenu = (event: React.UIEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -39,8 +43,19 @@ export function QueueCard({queue}: { queue: Queue }) {
   };
 
   const handleDeleteClick = () => {
-    deleteDoc(queue.documentRef());
     handleMenuClose();
+    confirmDelete(`${queue.name ? "The \"" + queue.name + "\"" : "This"} queue and all tasks will be deleted. Are you sure?`, "Delete Queue")
+      .then(() => {
+        deleteDoc(queue.documentRef())
+          .then(() => {
+            enqueueSnackbar("Queue deleted.");
+          })
+          .catch((e) => {
+            enqueueSnackbar("Error deleting queue.", {variant: "error"});
+            console.error("Error deleting queue.", e);
+          });
+      })
+      .catch(() => true);
   };
 
   return (

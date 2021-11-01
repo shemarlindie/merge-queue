@@ -2,6 +2,9 @@ import {Queue, QueueItem} from "./models";
 import {MdMoreVert} from "react-icons/all";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import React, {useState} from "react";
+import {deleteDoc} from "firebase/firestore";
+import {useSnackbar} from "notistack";
+import {useConfirmDelete} from "../../utils/dialogs";
 
 interface QueueTableRowMoreMenuProps {
   queue: Queue;
@@ -11,9 +14,10 @@ interface QueueTableRowMoreMenuProps {
 
 export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const confirmDelete = useConfirmDelete();
+  const {enqueueSnackbar} = useSnackbar();
 
   const handleMenu = (event: React.UIEvent<HTMLElement>) => {
-    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -22,7 +26,6 @@ export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMe
   };
 
   const handleEdit = (event: React.UIEvent<HTMLElement>) => {
-    event.stopPropagation();
     handleMenuClose();
     if (onEdit) {
       onEdit(task, event);
@@ -30,17 +33,28 @@ export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMe
   };
 
   const handleDelete = (event: React.UIEvent<HTMLElement>) => {
-    event.stopPropagation();
     handleMenuClose();
+
+    confirmDelete(`${task.ticketNumber ? "The " + task.ticketNumber : "This"} merge task will be deleted. Are you sure?`, "Delete Merge Task")
+      .then(() => {
+        deleteDoc(task.documentRef())
+          .then(() => {
+            enqueueSnackbar("Task deleted.");
+          })
+          .catch((e) => {
+            enqueueSnackbar("Error deleting task.", {variant: "error"});
+            console.error("Error deleting task.", e);
+          });
+      })
+      .catch(() => true);
   };
 
   return (
-    <div>
+    <div onClick={(e) => e.stopPropagation()}>
       <IconButton onClick={handleMenu}>
         <MdMoreVert/>
       </IconButton>
       <Menu
-        onClick={(e) => e.stopPropagation()}
         anchorEl={anchorEl}
         anchorOrigin={{
           vertical: "bottom",

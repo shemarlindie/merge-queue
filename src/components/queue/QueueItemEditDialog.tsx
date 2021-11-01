@@ -12,7 +12,7 @@ import {
   useTheme
 } from "@mui/material";
 import {doc as docRef, serverTimestamp, setDoc, updateDoc} from "firebase/firestore";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useMemo, useState} from "react";
 import {useFormik} from "formik";
 import {jiraPriorityList, Queue, QueueItem, queueItemValidationSchema, statusList, typeList} from "./models";
 import {LoadingButton} from "@mui/lab";
@@ -29,8 +29,6 @@ export interface QueueItemEditDialogProps {
   task?: QueueItem;
 }
 
-let renders = 0;
-
 export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditDialogProps) {
   const [saving, setSaving] = useState(false);
   const {enqueueSnackbar} = useSnackbar();
@@ -39,10 +37,6 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
   const members = useMemo(() => makeUserProxyList(queue?.members), [queue]);
   const clients = queue?.clients || [];
   const sections = queue?.sections.map(el => el.name) || [];
-
-  useEffect(() => {
-    console.log("renders", renders++);
-  });
 
   const handleCancel = () => {
     onClose();
