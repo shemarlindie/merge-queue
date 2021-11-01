@@ -109,7 +109,8 @@ export class QueueItem extends AuditedModel {
     public mrLink: string = '',
     public mrLink2: string = '',
     public client: string = '',
-    public notes: string = ''
+    public notes: string = '',
+    public readonly active: boolean = true,
   ) {
     super()
   }
@@ -186,6 +187,7 @@ export class Queue {
     public sections: QueueSection[] = [],
     public members: UserProxy[] = [],
     public watchers: UserProxy[] = [],
+    public readonly active: boolean = true,
   ) {
   }
 

@@ -93,6 +93,7 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
       priority: "",
       client: clients.length ? clients[0] : "",
       notes: "",
+      active: true,
     },
     validationSchema: queueItemValidationSchema,
     onSubmit: handleSave,

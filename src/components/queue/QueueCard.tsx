@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {QueueEditDialog} from "./QueueEditDialog";
 import React, {useState} from "react";
-import {deleteDoc} from "firebase/firestore";
+import {updateDoc} from "firebase/firestore";
 import {BsThreeDotsVertical, MdDelete, MdEdit} from "react-icons/all";
 import {useTruncate} from "../../utils/useTruncate";
 import {Link as RouterLink} from "react-router-dom";
@@ -46,9 +46,9 @@ export function QueueCard({queue}: { queue: Queue }) {
     handleMenuClose();
     confirmDelete(`${queue.name ? "The \"" + queue.name + "\"" : "This"} queue and all tasks will be deleted. Are you sure?`, "Delete Queue")
       .then(() => {
-        deleteDoc(queue.documentRef())
+        updateDoc(queue.documentRef(), {active: false})
           .then(() => {
-            enqueueSnackbar("Queue deleted.");
+            enqueueSnackbar("Queue was queued for deleted.");
           })
           .catch((e) => {
             enqueueSnackbar("Error deleting queue.", {variant: "error"});

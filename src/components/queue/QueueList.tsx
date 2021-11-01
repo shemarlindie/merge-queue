@@ -6,9 +6,10 @@ import {useState} from "react";
 import {QueueEditDialog} from "./QueueEditDialog";
 import {LayoutBreadcrumbs} from "../layout/LayoutBreadcrumbs";
 import {Queue} from "./models";
+import {query, where} from "firebase/firestore";
 
 export function QueueList() {
-  const [queueList, loading, error] = useCollectionData(Queue.collectionRef());
+  const [queueList, loading, error] = useCollectionData(query(Queue.collectionRef(), where("active", "==", true)));
   const [showEditDialog, setShowEditDialog] = useState(false);
 
   const handleEditDialogOpen = () => {

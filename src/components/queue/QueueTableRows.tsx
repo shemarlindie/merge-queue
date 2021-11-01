@@ -1,5 +1,5 @@
 import {query, where} from "firebase/firestore";
-import {Queue, QueueItem, QueueSection, statusList} from "./models";
+import {Queue, QueueItem, QueueSection} from "./models";
 import {AppBar, TableCell, TableRow, Toolbar, Typography} from "@mui/material";
 import {QueueTableRowsGrouped} from "./QueueTableRowsGrouped";
 import React, {ReactElement, useState} from "react";
@@ -26,8 +26,8 @@ export function QueueTableRows({queue, tableConfig}: QueueSectionRowsProps) {
   sections.forEach((section) => {
     const colRef = query(
       QueueItem.collectionRef(queue.id),
+      where("active", "==", true),
       where("section", "==", section.name),
-      where("status", "!=", statusList[statusList.length - 1]),
     );
     rows.push(
       <TableRow key={section.name}>
