@@ -8,6 +8,7 @@
 - Create sendgrid api key
 - Set sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
 - Set "from" email `firebase functions:config:set sendgrid.from=<from email address>`
+- Enable notifications `firebase functions:config:set notificationsEnabled=true`
 - Deploy to firebase: `cd ./firebase && firebase deploy`
 
 #### Web:
