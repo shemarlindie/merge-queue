@@ -87,6 +87,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
     watchers: [],
     sections: [],
     members: auth.currentUser ? [makeUserProxy(auth.currentUser)] : [],
+    active: true,
   };
   initialValues.sections = addIndexIds(initialValues.sections);
   const formik = useFormik({

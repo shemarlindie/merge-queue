@@ -2,7 +2,7 @@ import {Queue, QueueItem} from "./models";
 import {MdMoreVert} from "react-icons/all";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import React, {useState} from "react";
-import {deleteDoc} from "firebase/firestore";
+import {updateDoc} from "firebase/firestore";
 import {useSnackbar} from "notistack";
 import {useConfirmDelete} from "../../utils/dialogs";
 
@@ -35,15 +35,18 @@ export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMe
   const handleDelete = (event: React.UIEvent<HTMLElement>) => {
     handleMenuClose();
 
-    confirmDelete(`${task.ticketNumber ? "The " + task.ticketNumber : "This"} merge task will be deleted. Are you sure?`, "Delete Merge Task")
+    confirmDelete(
+      `${task.ticketNumber ? "The \"" + task.ticketNumber + "\"" : "This"} merge task will be deleted. Are you sure?`,
+      "Delete Merge Task"
+    )
       .then(() => {
-        deleteDoc(task.documentRef())
+        updateDoc(task.documentRef(), {active: false})
           .then(() => {
-            enqueueSnackbar("Task deleted.");
+            enqueueSnackbar("Merge task was queued for deletion.");
           })
           .catch((e) => {
-            enqueueSnackbar("Error deleting task.", {variant: "error"});
-            console.error("Error deleting task.", e);
+            enqueueSnackbar("Error deleting merge task.", {variant: "error"});
+            console.error("Error deleting merge task.", e);
           });
       })
       .catch(() => true);
