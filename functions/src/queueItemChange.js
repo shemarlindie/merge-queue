@@ -9,7 +9,7 @@ admin.initializeApp()
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(functions.config().sendgrid.key);
 
-const notificationsEnabled = functions.config().notificationsEnabled
+const notificationsEnabled = functions.config().app.notifications === "true"
 
 const userFormatter = (user) => {
   return user ? user.displayName : "-";
