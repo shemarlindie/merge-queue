@@ -224,10 +224,6 @@ export const queueItemValidationSchema = Yup.object({
   description: Yup.string()
     .required()
     .max(200, 'Must not exceed 200 characters'),
-  developer: Yup.object({
-    uid: Yup.string().required(), displayName: Yup.string().required(), email: Yup.string().required()
-  })
-    .required(),
   ticketNumber: Yup.string()
     .max(30, 'Must not exceed 30 characters'),
   basedOnVersion: Yup.string()
