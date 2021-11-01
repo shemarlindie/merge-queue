@@ -1,24 +1,21 @@
 ## Deploy Checklist
-#### Firebase:
+#### Prod
 - Create firebase project (pay-as-you-go)
-- Enable cloud firestore, cloud functions
-- Create app in firebase project
-- Set firebase project id in `firebase/.firebaserc`
+- Set firebase project id in `.firebaserc`
+- Enable cloud firestore, cloud functions, hosting (visit tab)
+- Create web app in firebase project
+- Set up `.env.local` based on `.env.example` with firebase web app config
 - Set up sendgrid account with sender authentication
 - Create sendgrid api key
-- Set sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
-- Set "from" email `firebase functions:config:set sendgrid.from=<from email address>`
+- Configure sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
+- Configure "from" email `firebase functions:config:set sendgrid.from=<from email address>`
 - Enable notifications `firebase functions:config:set notificationsEnabled=true`
-- Deploy to firebase: `cd ./firebase && firebase deploy`
-
-#### Web:
-- Setup `.env` based on `.env.example` with firebase app variables
-- Build `npm build`
-- Deploy `./dist` to web server
+- Deploy to firebase: `firebase deploy`
 
 #### Dev
 - Setup function emulation config file (`.runtimeconfig.json`) in `firebase/functions` using `.runtimeconfig.example.json`
 - Start emulators: `firebase emulators:start`
+- Start frontend: `npm start`
 
 
 # Getting Started with Create React App
