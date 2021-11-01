@@ -54,7 +54,7 @@ export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMe
 
   return (
     <div onClick={(e) => e.stopPropagation()}>
-      <IconButton onClick={handleMenu}>
+      <IconButton onClick={handleMenu} size="small">
         <MdMoreVert/>
       </IconButton>
       <Menu
