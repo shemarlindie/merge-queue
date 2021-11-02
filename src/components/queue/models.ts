@@ -52,12 +52,13 @@ export const typeList = [
 ]
 
 export const groupByFields: (keyof QueueItem)[] = [
-  'reviewer',
-  'developer',
-  'qaAssignee',
+  'jiraPriority',
+  'client',
   'status',
   'type',
-  'jiraPriority',
+  'developer',
+  'reviewer',
+  'qaAssignee',
 ]
 
 export class GenericConverter<T> implements FirestoreDataConverter<T> {
