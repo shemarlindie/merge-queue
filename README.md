@@ -13,7 +13,7 @@
 - Deploy to firebase: `firebase deploy`
 
 #### Dev
-- Setup function emulation config file (`.runtimeconfig.json`) in `firebase/functions` using `.runtimeconfig.example.json`
+- Setup function emulation config file (`.runtimeconfig.json`) in `./functions` using `.runtimeconfig.example.json`
 - Start emulators: `firebase emulators:start`
 - Start frontend: `npm start`
 
