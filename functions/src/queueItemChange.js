@@ -52,6 +52,22 @@ const watchedFields = {
   type: {comparer: typeComparer, formatter: typeFormatter},
 };
 
+/**
+ * Gets the user who made the change from audit data stored in the model.
+ * Works for create and update.
+ * null if the user could not be determined.
+ *
+ * This is a workaround since firestore triggers do not currently support context.auth (like realtime database does)
+ * @param change
+ * @returns {Promise<*>}
+ */
+const getChangeUser = async (change) => {
+  const after = change.after.data();
+  const userRef = after ? after.updatedBy || after.createdBy : null;
+  const user = userRef ? await userRef.get() : null;
+  return user.data() || null;
+}
+
 const getLatestChange = (change) => {
   return change.after.data() || change.before.data();
 };
@@ -93,7 +109,8 @@ const getChangedFields = async (change) => {
     const changeType = getChangeType(change);
     const latest = getLatestChange(change);
     const queue = await admin.firestore().doc(`queues/${latest.queueId}`).get();
-    const changedFields = {fields, changeType, queue: queue.data(), latest, before: {}, after: {}};
+    const user = await getChangeUser(change);
+    const changedFields = {user, fields, changeType, queue: queue.data(), latest, before: {}, after: {}};
     for (const key of fields) {
       changedFields.before[key] = change.before.get(key);
       changedFields.after[key] = change.after.get(key);
@@ -160,14 +177,15 @@ const prepareEmailBody = async (changedFields, htmlDiff, textDiff) => {
   return body;
 };
 
-const getRecipients = (queue, change) => {
+const getRecipients = async (changedFields, change) => {
   const recipientFields = ["developer", "reviewer", "qaAssignee"];
   const recipients = new Set();
 
   // get recipients from changed task
+  const after = change.after.data();
+  const before = change.before.data();
+  const userEmail = changedFields.user && changedFields.user.email;
   for (const field of recipientFields) {
-    const after = change.after.data();
-    const before = change.before.data();
     if (after) {
       if (after[field] && after[field].email) {
         recipients.add(after[field].email);
@@ -182,13 +200,19 @@ const getRecipients = (queue, change) => {
   console.log(`Found ${recipients.size} recipient(s) in task.`);
 
   // get recipients from queue watchers
-  const watchers = queue.watchers || []
+  const watchers = changedFields.queue.watchers || []
   for (const user of watchers) {
     if (user && user.email) {
       recipients.add(user.email);
     }
   }
   console.log(`Found ${watchers.length} queue watcher(s).`);
+
+  // exclude user who made the change
+  if (userEmail) {
+    console.log(`Excluding ${userEmail} from recipients.`);
+    recipients.delete(userEmail)
+  }
 
   return Array.from(recipients);
 };
@@ -198,7 +222,7 @@ const sendEmail = async (change) => {
   if (changedFields) {
     if (changedFields.queue) {
       console.log(`[${changedFields.latest.id}] CHANGED FIELDS`, JSON.stringify(changedFields.fields));
-      const recipients = getRecipients(changedFields.queue, change);
+      const recipients = await getRecipients(changedFields, change);
       if (recipients.length) {
         console.log(`[${changedFields.latest.id}] Sending notification to ${recipients.length} user(s).`);
         const {created, updated, deleted} = changedFields.changeType;
