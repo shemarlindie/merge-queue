@@ -43,7 +43,7 @@ const watchedFields = {
   jiraPriority: {comparer: valueComparer, formatter: valueFormatter},
   mrLink: {comparer: valueComparer, formatter: valueFormatter},
   mrLink2: {comparer: valueComparer, formatter: valueFormatter},
-  priority: {comparer: valueComparer, formatter: valueFormatter},
+  // priority: {comparer: valueComparer, formatter: valueFormatter},
   qaAssignee: {comparer: userComparer, formatter: userFormatter},
   reviewer: {comparer: userComparer, formatter: userFormatter},
   section: {comparer: valueComparer, formatter: valueFormatter},
