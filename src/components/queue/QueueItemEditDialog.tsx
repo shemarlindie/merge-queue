@@ -16,7 +16,7 @@ import React, {useMemo, useState} from "react";
 import {useFormik} from "formik";
 import {jiraPriorityList, Queue, QueueItem, queueItemValidationSchema, statusList, typeList} from "./models";
 import {LoadingButton} from "@mui/lab";
-import {auth, firestore} from "../../firebase/firebase-config";
+import {auth, firestore} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
 import {makeUserProxy, makeUserProxyList} from "../auth/utils";

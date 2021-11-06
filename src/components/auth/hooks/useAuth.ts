@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { auth } from "../../../firebase/firebase-config";
+import { auth } from "../../../config/firebase-config";
 import { User } from 'firebase/auth'
 import { LocalStorage } from "../../../utils/LocalStorage";
 import { Auth } from "../models";

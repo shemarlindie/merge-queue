@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { doc as docRef, setDoc } from "firebase/firestore"
 
-import { auth, firebaseUiConfig, firestore } from '../../firebase/firebase-config'
+import { auth, firebaseUiConfig, firestore } from '../../config/firebase-config'
 import { StyledFirebaseAuth } from "react-firebaseui";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeUserProfile } from "./utils";

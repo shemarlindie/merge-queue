@@ -1,6 +1,6 @@
 import { UserInfo } from "firebase/auth";
 import { doc, DocumentReference, DocumentData } from "firebase/firestore";
-import { firestore } from "../../firebase/firebase-config";
+import { firestore } from "../../config/firebase-config";
 import { UserProxy } from "./models";
 
 export function makeUserProfile(user: UserInfo): UserInfo {
