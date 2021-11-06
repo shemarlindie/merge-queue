@@ -6,6 +6,10 @@ export type Optional<T> = (T | undefined | null)
 export type DocData = admin.firestore.DocumentData
 export type DocRef = admin.firestore.DocumentReference
 export type TaskChange = Change<admin.firestore.DocumentSnapshot>;
+export type FormattedChanges = {
+  before: Record<string, string>
+  after: Record<string, string>
+}
 
 export type Formatter<T> = (value: Optional<T>) => string;
 export type Comparer<T> = (a: Optional<T>, b: Optional<T>) => boolean;
