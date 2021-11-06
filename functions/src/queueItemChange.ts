@@ -13,7 +13,9 @@ import {
 } from "./utils";
 import {
   ChangeSummary,
-  DocRef, Formatter,
+  DocRef,
+  FormattedChanges,
+  Formatter,
   Optional,
   TaskChange,
   WatchedFields,
@@ -129,61 +131,23 @@ const getChangeSummary = async (change: TaskChange) => {
   return null;
 };
 
-const prepareHtmlDiff = (changeSummary: ChangeSummary) => {
-  const htmlDiff: Record<string, string> = {};
+const formatChanges = (changeSummary: ChangeSummary) => {
+  const formatted: FormattedChanges = {before: {}, after: {}};
 
   for (const key of changeSummary.fields) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const format: Optional<Formatter<any>> = watchedFields[key]?.formatter;
     if (format) {
-      if (changeSummary.changeType.created) {
-        htmlDiff[key] = `<ins aria-label="added value">
-                            ${format(changeSummary.after[key])}
-                        </ins>`;
-      } else if (changeSummary.changeType.deleted) {
-        htmlDiff[key] = `<del aria-label="removed value">
-                            ${format(changeSummary.before[key])}
-                        </del>`;
-      } else {
-        htmlDiff[key] = `<del aria-label="changed from">
-                            ${format(changeSummary.before[key])}
-                        </del> 
-                        <ins aria-label="changed to">
-                            ${format(changeSummary.after[key])}
-                        </ins>`;
-      }
+      formatted["before"][key] = format(changeSummary.before[key]);
+      formatted["after"][key] = format(changeSummary.after[key]);
     }
   }
 
-  return htmlDiff;
+  return formatted;
 };
 
-const prepareTextDiff = (changeSummary: ChangeSummary) => {
-  const textDiff: Record<string, string> = {};
-
-  for (const key of changeSummary.fields) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const format: Optional<Formatter<any>> = watchedFields[key]?.formatter;
-    if (format) {
-      if (changeSummary.changeType.created) {
-        textDiff[key] = `Added: ${format(changeSummary.after[key])}`;
-      } else if (changeSummary.changeType.deleted) {
-        textDiff[key] = `Removed: ${format(changeSummary.before[key])}`;
-      } else {
-        textDiff[key] = `Before: ${format(changeSummary.before[key])} | 
-                         After: ${format(changeSummary.after[key])}`;
-      }
-    }
-  }
-
-  return textDiff;
-};
-
-const prepareEmailBody = async (
-  changeSummary: ChangeSummary,
-  htmlDiff: Record<string, string>,
-  textDiff: Record<string, string>,
-) => {
+const prepareEmailBody = async (changeSummary: ChangeSummary) => {
+  const diff = formatChanges(changeSummary);
   const tmplDir = path.join(__dirname, "..", "src", "templates");
   const body = {html: "", text: ""};
   const email = new Email({
@@ -194,14 +158,10 @@ const prepareEmailBody = async (
     },
   });
   body.html = await email.render(
-    path.join(tmplDir, "queue-item-change"),
-    {changedFields: changeSummary, htmlDiff}
+    path.join(tmplDir, "queue-item-change"), {changeSummary, diff}
   );
   body.text = await email.render(
-    path.join(tmplDir, "queue-item-change-text"), {
-      changedFields: changeSummary,
-      textDiff,
-    }
+    path.join(tmplDir, "queue-item-change-text"), {changeSummary, diff}
   );
 
   return body;
@@ -250,24 +210,22 @@ const getRecipients = async (
 };
 
 const sendEmail = async (change: TaskChange) => {
-  const changedFields = await getChangeSummary(change);
-  if (changedFields) {
-    if (changedFields.queue) {
+  const changeSummary = await getChangeSummary(change);
+  if (changeSummary) {
+    if (changeSummary.queue) {
       console.log(
-        `[${changedFields.latest.id}] CHANGED FIELDS`,
-        JSON.stringify(changedFields.fields),
+        `[${changeSummary.latest.id}] CHANGED FIELDS`,
+        JSON.stringify(changeSummary.fields),
       );
-      const recipients = await getRecipients(changedFields, change);
+      const recipients = await getRecipients(changeSummary, change);
       if (recipients.length) {
         console.log(
-          `[${changedFields.latest.id}] 
+          `[${changeSummary.latest.id}] 
           Sending notification to ${recipients.length} user(s).`
         );
-        const {created, updated, deleted} = changedFields.changeType;
-        const task = changedFields.latest;
-        const htmlDiff = prepareHtmlDiff(changedFields);
-        const textDiff = prepareTextDiff(changedFields);
-        const body = await prepareEmailBody(changedFields, htmlDiff, textDiff);
+        const {created, updated, deleted} = changeSummary.changeType;
+        const task = changeSummary.latest;
+        const body = await prepareEmailBody(changeSummary);
         const from = `Merge Queue <${functions.config().sendgrid.from}>`;
         let subject = (
           `${task.ticketNumber ? task.ticketNumber + " | " : ""}Merge Task `
