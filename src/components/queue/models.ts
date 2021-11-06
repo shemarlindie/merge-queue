@@ -13,7 +13,7 @@ import {
   Timestamp
 } from "firebase/firestore";
 import { UserInfo } from "firebase/auth";
-import { firestore } from "../../firebase/firebase-config";
+import { firestore } from "../../config/firebase-config";
 import { AuditedModel } from "../../utils/models";
 
 

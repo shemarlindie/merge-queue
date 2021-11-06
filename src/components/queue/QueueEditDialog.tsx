@@ -17,7 +17,7 @@ import React, {useCallback, useState} from "react";
 import {useFormik} from "formik";
 import {groupByFields, Queue, queueValidationSchema} from "./models";
 import {LoadingButton} from "@mui/lab";
-import {auth, firestore} from "../../firebase/firebase-config";
+import {auth, firestore} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
 import {useCollectionDataOnce} from "react-firebase9-hooks/firestore";
