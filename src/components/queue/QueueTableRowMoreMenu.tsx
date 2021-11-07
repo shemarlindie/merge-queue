@@ -12,7 +12,11 @@ interface QueueTableRowMoreMenuProps {
   onEdit?: (task: QueueItem, event: React.UIEvent<HTMLElement>) => void;
 }
 
-export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMenuProps) {
+export function QueueTableRowMoreMenu({
+                                        queue,
+                                        task,
+                                        onEdit
+                                      }: QueueTableRowMoreMenuProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const confirmDelete = useConfirmDelete();
   const {enqueueSnackbar} = useSnackbar();

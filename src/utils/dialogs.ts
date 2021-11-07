@@ -13,5 +13,9 @@ export function useConfirmDelete(): (description: string, title?: string) => Pro
       autoFocus: true
     }
   };
-  return (description: string, title?: string) => confirm({...options, title, description});
+  return (description: string, title?: string) => confirm({
+    ...options,
+    title,
+    description
+  });
 }

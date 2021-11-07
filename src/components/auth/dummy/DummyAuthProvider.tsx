@@ -1,7 +1,14 @@
-import React, { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from "react";
 
 export interface DummyUser {
-  email: string
+  email: string;
 }
 
 export interface DummyAuth {
@@ -15,59 +22,59 @@ const initialAuthContext = {
   loading: false,
   login: Promise.reject,
   logout: Promise.reject
-}
+};
 
-export const DummyAuthContext = createContext<DummyAuth>(initialAuthContext)
+export const DummyAuthContext = createContext<DummyAuth>(initialAuthContext);
 
 export function useDummyAuth() {
-  return useContext(DummyAuthContext)
+  return useContext(DummyAuthContext);
 }
 
 export function DummyAuthProvider(props: React.PropsWithChildren<ReactNode>) {
-  const [user, setUser] = useState<DummyUser|undefined>()
-  const [loading, setLoading] = useState(false)
-  const delay = 1000
+  const [user, setUser] = useState<DummyUser | undefined>();
+  const [loading, setLoading] = useState(false);
+  const delay = 1000;
 
   const login = useCallback(() => {
-    setLoading(true)
+    setLoading(true);
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
-        setUser({email: 'shemar@example.com'})
-        setLoading(false)
-        resolve()
-      }, delay)
-    })
-  }, [])
+        setUser({email: "shemar@example.com"});
+        setLoading(false);
+        resolve();
+      }, delay);
+    });
+  }, []);
 
   const logout = useCallback(() => {
-    setLoading(true)
+    setLoading(true);
     return new Promise<void>((resolve, reject) => {
       setTimeout(() => {
-        setUser(undefined)
-        setLoading(false)
-        resolve()
-      }, delay)
-    })
-  }, [])
+        setUser(undefined);
+        setLoading(false);
+        resolve();
+      }, delay);
+    });
+  }, []);
 
   const checkAuth = () => {
-    setLoading(true)
+    setLoading(true);
     const handle = setTimeout(() => {
-      setLoading(false)
-    }, delay)
+      setLoading(false);
+    }, delay);
 
     return () => {
-      clearTimeout(handle)
-    }
-  }
+      clearTimeout(handle);
+    };
+  };
 
   useEffect(() => {
-    return checkAuth()
-  }, [])
+    return checkAuth();
+  }, []);
 
   return (
     <DummyAuthContext.Provider value={{loading, user, login, logout}}>
       {props.children}
     </DummyAuthContext.Provider>
-  )
+  );
 }

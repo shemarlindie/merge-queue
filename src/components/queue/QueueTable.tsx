@@ -1,5 +1,14 @@
 import {Queue, QueueItem} from "./models";
-import {Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip} from "@mui/material";
+import {
+  Link,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip
+} from "@mui/material";
 import React, {ReactElement} from "react";
 import {QueueTableRows} from "./QueueTableRows";
 import {UserProxy} from "../auth/models";
@@ -34,7 +43,11 @@ export interface QueueItemTableConfig {
 export function QueueTable({queue}: QueueSectionsProps) {
   let tableConfig: QueueItemTableConfig[] = [
     {header: "Priority", field: "priority", defaultValue: "-"},
-    {header: "Developer", field: "developer", transformer: userProxyTransformer},
+    {
+      header: "Developer",
+      field: "developer",
+      transformer: userProxyTransformer
+    },
     {header: "Jira Ticket", field: "ticketNumber", defaultValue: "-"},
     {header: "Based On", field: "basedOnVersion", defaultValue: "-"},
     {header: "Status", field: "status"},
@@ -61,7 +74,11 @@ export function QueueTable({queue}: QueueSectionsProps) {
         );
       }
     },
-    {header: "Type", field: "type", transformer: (value) => value ? value.join(", ") : "-"},
+    {
+      header: "Type",
+      field: "type",
+      transformer: (value) => value ? value.join(", ") : "-"
+    },
     {header: "Description", field: "description", defaultValue: "-"},
     {header: "Jira Priority", field: "jiraPriority"},
     {header: "Reviewer", field: "reviewer", transformer: userProxyTransformer},
@@ -73,10 +90,12 @@ export function QueueTable({queue}: QueueSectionsProps) {
   return (
     <div className="mb-5">
       <TableContainer>
-        <Table size="small" stickyHeader aria-label="queue item table grouped by reviewer">
+        <Table size="small" stickyHeader
+               aria-label="queue item table grouped by reviewer">
           <TableHead>
             <TableRow>
-              {tableConfig.map((col) => <TableCell key={col.header}><b>{col.header}</b></TableCell>)}
+              {tableConfig.map((col) => <TableCell
+                key={col.header}><b>{col.header}</b></TableCell>)}
             </TableRow>
           </TableHead>
 

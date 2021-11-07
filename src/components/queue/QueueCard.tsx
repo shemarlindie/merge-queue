@@ -59,7 +59,8 @@ export function QueueCard({queue}: { queue: Queue }) {
   };
 
   return (
-    <Card className="m-2 d-flex flex-column w-100" sx={{minWidth: 150, maxWidth: 275, minHeight: 162}}>
+    <Card className="m-2 d-flex flex-column w-100"
+          sx={{minWidth: 150, maxWidth: 275, minHeight: 162}}>
       <CardHeader
         action={
           <>
@@ -85,8 +86,10 @@ export function QueueCard({queue}: { queue: Queue }) {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              <MenuItem onClick={handleEditClick}><MdEdit/>&nbsp; Edit</MenuItem>
-              <MenuItem onClick={handleDeleteClick}><MdDelete/>&nbsp; Delete</MenuItem>
+              <MenuItem
+                onClick={handleEditClick}><MdEdit/>&nbsp; Edit</MenuItem>
+              <MenuItem
+                onClick={handleDeleteClick}><MdDelete/>&nbsp; Delete</MenuItem>
             </Menu>
           </>
         }
@@ -97,11 +100,15 @@ export function QueueCard({queue}: { queue: Queue }) {
           {useTruncate(queue?.description || "", 65)}
         </Typography>
       </CardContent>
-      <CardActions className="d-flex flex-row justify-content-center justify-content-md-end">
-        <Button component={RouterLink} to={`/queues/${queue.id}`}>Manage Queue</Button>
+      <CardActions
+        className="d-flex flex-row justify-content-center justify-content-md-end">
+        <Button component={RouterLink} to={`/queues/${queue.id}`}>Manage
+          Queue</Button>
       </CardActions>
 
-      {showEditDialog && <QueueEditDialog open={showEditDialog} onClose={handleEditDialogClose} queue={queue}/>}
+      {showEditDialog &&
+      <QueueEditDialog open={showEditDialog} onClose={handleEditDialogClose}
+                       queue={queue}/>}
     </Card>
   );
 }

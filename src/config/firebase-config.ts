@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider, connectAuthEmulator } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import {connectAuthEmulator, getAuth, GoogleAuthProvider} from "firebase/auth";
+import {connectFirestoreEmulator, getFirestore} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,7 +21,7 @@ const firebaseConfig = {
 // Configure FirebaseUI.
 export const firebaseUiConfig = {
   // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
+  signInFlow: "popup",
   // Redirect to / after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
   // signInSuccessUrl: '/',
   // We will display Google and Facebook as auth providers.

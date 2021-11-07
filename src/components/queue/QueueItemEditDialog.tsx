@@ -13,7 +13,14 @@ import {
 } from "@mui/material";
 import React, {useMemo, useState} from "react";
 import {useFormik} from "formik";
-import {jiraPriorityList, Queue, QueueItem, queueItemValidationSchema, statusList, typeList} from "./models";
+import {
+  jiraPriorityList,
+  Queue,
+  QueueItem,
+  queueItemValidationSchema,
+  statusList,
+  typeList
+} from "./models";
 import {LoadingButton} from "@mui/lab";
 import {auth} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
@@ -28,7 +35,12 @@ export interface QueueItemEditDialogProps {
   task?: QueueItem;
 }
 
-export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditDialogProps) {
+export function QueueItemEditDialog({
+                                      onClose,
+                                      open,
+                                      queue,
+                                      task
+                                    }: QueueItemEditDialogProps) {
   const [saving, setSaving] = useState(false);
   const {enqueueSnackbar} = useSnackbar();
   const theme = useTheme();
@@ -46,7 +58,7 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
     setSaving(true);
     try {
       if (task) {
-        await QueueService.updateQueueItem(task, values)
+        await QueueService.updateQueueItem(task, values);
       } else {
         await QueueService.createQueueItem(queue, values);
       }
@@ -89,9 +101,11 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
   });
 
   return (
-    <Dialog onClose={handleCancel} open={open} fullScreen={fullScreen} maxWidth="md" fullWidth keepMounted>
+    <Dialog onClose={handleCancel} open={open} fullScreen={fullScreen}
+            maxWidth="md" fullWidth keepMounted>
       <form onSubmit={formik.handleSubmit} autoComplete="off" noValidate>
-        <DialogTitle className="d-flex flex-row justify-content-between align-items-center">
+        <DialogTitle
+          className="d-flex flex-row justify-content-between align-items-center">
           <span>{task ? "Edit" : "Add"} Task</span>
           <IconButton onClick={handleCancel}><MdClose/></IconButton>
         </DialogTitle>
@@ -100,7 +114,8 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
             {/*{JSON.stringify(formik.errors)}*/}
           </DialogContentText>
 
-          <div className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
+          <div
+            className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
             <Autocomplete
               className="me-md-3"
               options={sections}
@@ -153,7 +168,8 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
             />
           </div>
 
-          <div className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
+          <div
+            className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
             <TextField
               className="me-md-3"
               type="text"
@@ -278,7 +294,8 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
             {...formik.getFieldProps("description")}
           />
 
-          <div className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
+          <div
+            className="d-flex flex-column justify-content-start flex-md-row justify-content-md-evenly">
             <Autocomplete
               className="me-md-3"
               options={members}

@@ -1,13 +1,13 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import { AppBar, Button, Menu, MenuItem, Toolbar } from "@mui/material";
-import { BsCardList, BsPerson } from "react-icons/bs";
-import { useAuth } from "../auth/hooks/useAuth";
+import {Link, Outlet, useNavigate} from "react-router-dom";
+import {AppBar, Button, Menu, MenuItem, Toolbar} from "@mui/material";
+import {BsCardList, BsPerson} from "react-icons/bs";
+import {useAuth} from "../auth/hooks/useAuth";
 import React from "react";
 
 
 export function Layout() {
-  const {user, logout} = useAuth()
-  const navigate = useNavigate()
+  const {user, logout} = useAuth();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.UIEvent<HTMLElement>) => {
@@ -19,24 +19,24 @@ export function Layout() {
   };
 
   const handleLogout = () => {
-    handleClose()
+    handleClose();
     logout().then(() => {
-      navigate("/login")
-    })
-  }
+      navigate("/login");
+    });
+  };
 
   return (
     <div>
       <AppBar position="static" color="transparent">
         <Toolbar>
           <Button to="/" component={Link}
-                  startIcon={<BsCardList size="24" />}
-                  style={{textTransform: 'none'}}
+                  startIcon={<BsCardList size="24"/>}
+                  style={{textTransform: "none"}}
                   size="large"
           >
             Merge Queue
           </Button>
-          <div className="flex-grow-1" />
+          <div className="flex-grow-1"/>
 
           {/*{!user && (*/}
           {/*  <Button to="/login" component={Link}*/}
@@ -46,8 +46,8 @@ export function Layout() {
 
           {user && (
             <div>
-              <Button endIcon={<BsPerson />}
-                      style={{textTransform: 'none'}}
+              <Button endIcon={<BsPerson/>}
+                      style={{textTransform: "none"}}
                       size="large"
                       aria-label="account of current user"
                       aria-controls="menu-appbar"
@@ -60,13 +60,13 @@ export function Layout() {
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right',
+                  vertical: "bottom",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
@@ -79,10 +79,10 @@ export function Layout() {
       </AppBar>
 
       <div>
-        <Outlet />
+        <Outlet/>
       </div>
 
-      <footer className="border-top" />
+      <footer className="border-top"/>
     </div>
-  )
+  );
 }

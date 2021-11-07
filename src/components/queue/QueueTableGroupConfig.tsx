@@ -1,16 +1,16 @@
-import { groupByFields, QueueItem, QueueSection } from "./models";
-import { Button, Menu, MenuItem } from "@mui/material";
-import { MdViewAgenda } from "react-icons/all";
+import {groupByFields, QueueItem, QueueSection} from "./models";
+import {Button, Menu, MenuItem} from "@mui/material";
+import {MdViewAgenda} from "react-icons/all";
 import React from "react";
 
 export type GroupConfig = { [key: string]: keyof QueueItem }
 
 export function makeGroupConfig(sections: QueueSection[]) {
-  const config: GroupConfig = {}
+  const config: GroupConfig = {};
   for (const section of sections) {
-    config[section.name] = section.groupBy
+    config[section.name] = section.groupBy;
   }
-  return config
+  return config;
 }
 
 export interface QueueTableGroupConfigProps {
@@ -19,7 +19,11 @@ export interface QueueTableGroupConfigProps {
   onChange?: (section: QueueSection, field: keyof QueueItem) => void
 }
 
-export function QueueTableGroupConfig({config, section, onChange}: QueueTableGroupConfigProps) {
+export function QueueTableGroupConfig({
+                                        config,
+                                        section,
+                                        onChange
+                                      }: QueueTableGroupConfigProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.UIEvent<HTMLElement>) => {
@@ -32,15 +36,15 @@ export function QueueTableGroupConfig({config, section, onChange}: QueueTableGro
 
   const handleChangeGroupConfig = (section: QueueSection, field: keyof QueueItem) => {
     if (onChange) {
-      onChange(section, field)
+      onChange(section, field);
     }
-    handleMenuClose()
-  }
+    handleMenuClose();
+  };
 
   return (
     <div>
       <Button endIcon={<MdViewAgenda/>}
-              style={{textTransform: 'none'}}
+              style={{textTransform: "none"}}
               color={"inherit"}
               size="large"
               aria-label="group by"
@@ -52,13 +56,13 @@ export function QueueTableGroupConfig({config, section, onChange}: QueueTableGro
       <Menu
         anchorEl={anchorEl}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
+          vertical: "bottom",
+          horizontal: "right",
         }}
         keepMounted
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}>
@@ -66,5 +70,5 @@ export function QueueTableGroupConfig({config, section, onChange}: QueueTableGro
                                                 onClick={() => handleChangeGroupConfig(section, field)}>{field}</MenuItem>)}
       </Menu>
     </div>
-  )
+  );
 }

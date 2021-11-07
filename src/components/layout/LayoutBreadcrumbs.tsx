@@ -1,7 +1,7 @@
-import { PropsWithChildren } from "react";
-import { BsHouse, MdNavigateNext } from "react-icons/all";
-import { Breadcrumbs, IconButton } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import {PropsWithChildren} from "react";
+import {BsHouse, MdNavigateNext} from "react-icons/all";
+import {Breadcrumbs, IconButton} from "@mui/material";
+import {Link as RouterLink} from "react-router-dom";
 
 export function LayoutBreadcrumbs({children}: PropsWithChildren<any>) {
   return (
@@ -18,5 +18,5 @@ export function LayoutBreadcrumbs({children}: PropsWithChildren<any>) {
         {children}
       </Breadcrumbs>
     </div>
-  )
+  );
 }
