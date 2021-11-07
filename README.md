@@ -1,3 +1,12 @@
+# Merge Queue
+A queue management app for organizing the order in which MRs are merged.
+
+![](./screenshots/task_list.png)
+
+## Demo
+
+https://merge-queue.shemarlindie.com
+
 ## Deploy Checklist
 #### Prod
 - Create firebase project (pay-as-you-go)
