@@ -20,13 +20,13 @@ import {
   queueItemValidationSchema,
   statusList,
   typeList
-} from "./models";
+} from "../models";
 import {LoadingButton} from "@mui/lab";
 import {auth} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
-import {makeUserProxy, makeUserProxyList} from "../auth/utils";
-import {QueueService} from "./queue-service";
+import {makeUserProxy, makeUserProxyList} from "../../auth/utils";
+import {QueueService} from "../queue-service";
 
 export interface QueueItemEditDialogProps {
   open: boolean;

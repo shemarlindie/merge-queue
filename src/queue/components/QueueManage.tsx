@@ -1,8 +1,8 @@
 import {Link as RouterLink, useParams} from "react-router-dom";
-import {LayoutBreadcrumbs} from "../layout/LayoutBreadcrumbs";
+import {LayoutBreadcrumbs} from "../../layout/components/LayoutBreadcrumbs";
 import {CircularProgress, Link, Typography} from "@mui/material";
 import {useDocumentData} from "react-firebase9-hooks/firestore";
-import {Queue} from "./models";
+import {Queue} from "../models";
 import {QueueManageHeader} from "./QueueManageHeader";
 import {QueueTable} from "./QueueTable";
 

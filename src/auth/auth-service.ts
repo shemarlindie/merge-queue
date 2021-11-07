@@ -1,6 +1,6 @@
 import {UserInfo} from "firebase/auth";
 import {collection, doc, setDoc} from "firebase/firestore";
-import {auth, firestore} from "../../config/firebase-config";
+import {auth, firestore} from "../config/firebase-config";
 import {makeUserProfile, makeUserProxy} from "./utils";
 
 export class AuthService {

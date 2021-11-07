@@ -2,7 +2,7 @@ import {CollectionReference, Query} from "firebase/firestore";
 import {useCollection} from "react-firebase9-hooks/firestore";
 import React, {ReactElement, useMemo, useState} from "react";
 import {groupList} from "../../utils";
-import {jiraPriorityList, Queue, QueueItem, statusList} from "./models";
+import {jiraPriorityList, Queue, QueueItem, statusList} from "../models";
 import {TableCell, TableRow} from "@mui/material";
 import {QueueItemEditDialog} from "./QueueItemEditDialog";
 import {QueueItemTableConfig} from "./QueueTable";

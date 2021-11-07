@@ -4,7 +4,7 @@ import {auth, firebaseUiConfig} from "../../config/firebase-config";
 import {StyledFirebaseAuth} from "react-firebaseui";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Typography} from "@mui/material";
-import {AuthService} from "./auth-service";
+import {AuthService} from "../auth-service";
 
 export function Login() {
   const location = useLocation();

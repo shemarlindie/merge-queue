@@ -1,10 +1,10 @@
-import {QueueList} from "../components/queue/QueueList";
-import {Login} from "../components/auth/Login";
-import {NotFound} from "./NotFound";
+import {QueueList} from "../queue/components/QueueList";
+import {Login} from "../auth/components/Login";
+import {NotFound} from "./components/NotFound";
 import {Navigate, RouteObject} from "react-router-dom";
-import {Layout} from "../components/layout/Layout";
-import {RequireAuth} from "./RequireAuth";
-import {QueueManage} from "../components/queue/QueueManage";
+import {Layout} from "../layout/components/Layout";
+import {RequireAuth} from "./components/RequireAuth";
+import {QueueManage} from "../queue/components/QueueManage";
 
 export const routeConfig: RouteObject[] = [
   {
