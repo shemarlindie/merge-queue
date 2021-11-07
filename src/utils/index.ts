@@ -34,6 +34,6 @@ export function sortList<T>(list: T[], field: keyof T): T[] {
   })
 }
 
-export function addIndexIds<T>(list: T[]): T[] {
+export function addIndexIds<T>(list: T[]): (T&{id: number})[] {
   return list.map((val, index) => Object.assign(val, {id: index}))
 }

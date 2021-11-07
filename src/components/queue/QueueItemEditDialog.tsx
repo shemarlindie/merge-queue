@@ -11,16 +11,15 @@ import {
   useMediaQuery,
   useTheme
 } from "@mui/material";
-import {doc as docRef, serverTimestamp, setDoc, updateDoc} from "firebase/firestore";
 import React, {useMemo, useState} from "react";
 import {useFormik} from "formik";
 import {jiraPriorityList, Queue, QueueItem, queueItemValidationSchema, statusList, typeList} from "./models";
 import {LoadingButton} from "@mui/lab";
-import {auth, firestore} from "../../config/firebase-config";
+import {auth} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
 import {makeUserProxy, makeUserProxyList} from "../auth/utils";
-import {v4 as uuid4} from "uuid";
+import {QueueService} from "./queue-service";
 
 export interface QueueItemEditDialogProps {
   open: boolean;
@@ -47,32 +46,22 @@ export function QueueItemEditDialog({onClose, open, queue, task}: QueueItemEditD
     setSaving(true);
     try {
       if (task) {
-        await updateDoc(task.documentRef(), {
-          ...values,
-          dateUpdated: serverTimestamp(),
-          updatedBy: auth.currentUser ? docRef(firestore, "users", auth.currentUser.uid) : null
-        });
+        await QueueService.updateQueueItem(task, values)
       } else {
-        const id = uuid4();
-        await setDoc(docRef(QueueItem.collectionRef(queue.id), id), {
-          ...values,
-          id: id,
-          dateCreated: serverTimestamp(),
-          createdBy: auth.currentUser ? docRef(firestore, "users", auth.currentUser.uid) : null
-        });
+        await QueueService.createQueueItem(queue, values);
       }
       enqueueSnackbar("Task saved.", {
         autoHideDuration: 5000, role: "alert"
       });
+      setSaving(false);
       onClose();
     } catch (e: any) {
+      setSaving(false);
       console.error("Error saving task", e);
       enqueueSnackbar("Unable to save task.", {
         autoHideDuration: 5000, variant: "error", role: "alert"
       });
     }
-
-    setSaving(false);
   };
 
   const formik = useFormik({
