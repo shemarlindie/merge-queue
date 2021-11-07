@@ -4,8 +4,8 @@ import {Button, CircularProgress, Typography} from "@mui/material";
 import {BsPlus} from "react-icons/all";
 import {useState} from "react";
 import {QueueEditDialog} from "./QueueEditDialog";
-import {LayoutBreadcrumbs} from "../layout/LayoutBreadcrumbs";
-import {Queue} from "./models";
+import {LayoutBreadcrumbs} from "../../layout/components/LayoutBreadcrumbs";
+import {Queue} from "../models";
 import {query, where} from "firebase/firestore";
 
 export function QueueList() {

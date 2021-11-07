@@ -1,7 +1,7 @@
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import {AppBar, Button, Menu, MenuItem, Toolbar} from "@mui/material";
 import {BsCardList, BsPerson} from "react-icons/bs";
-import {useAuth} from "../auth/hooks/useAuth";
+import {useAuth} from "../../auth/hooks/useAuth";
 import React from "react";
 
 

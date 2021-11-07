@@ -1,10 +1,10 @@
-import {Queue, QueueItem} from "./models";
+import {Queue, QueueItem} from "../models";
 import {MdMoreVert} from "react-icons/all";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import React, {useState} from "react";
 import {useSnackbar} from "notistack";
-import {useConfirmDelete} from "../../utils/dialogs";
-import {QueueService} from "./queue-service";
+import {useConfirmDelete} from "../../utils/hooks/useConfirmDelete";
+import {QueueService} from "../queue-service";
 
 interface QueueTableRowMoreMenuProps {
   queue: Queue;

@@ -1,4 +1,4 @@
-import {Queue, QueueItem} from "./models";
+import {Queue, QueueItem} from "../models";
 import {
   Link,
   Table,
@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import React, {ReactElement} from "react";
 import {QueueTableRows} from "./QueueTableRows";
-import {UserProxy} from "../auth/models";
+import {UserProxy} from "../../auth/models";
 
 export interface QueueSectionsProps {
   queue: Queue;

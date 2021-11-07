@@ -14,16 +14,16 @@ import {
 } from "@mui/material";
 import React, {useCallback, useState} from "react";
 import {useFormik} from "formik";
-import {groupByFields, Queue, queueValidationSchema} from "./models";
+import {groupByFields, Queue, queueValidationSchema} from "../models";
 import {LoadingButton} from "@mui/lab";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
 import {useCollectionDataOnce} from "react-firebase9-hooks/firestore";
-import {makeUserProxyList} from "../auth/utils";
+import {makeUserProxyList} from "../../auth/utils";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {addIndexIds} from "../../utils";
-import {QueueService} from "./queue-service";
-import {AuthService} from "../auth/auth-service";
+import {QueueService} from "../queue-service";
+import {AuthService} from "../../auth/auth-service";
 
 export interface QueueEditDialogProps {
   open: boolean;

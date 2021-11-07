@@ -1,4 +1,4 @@
-import {Queue} from "./models";
+import {Queue} from "../models";
 import {Button, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {MdPostAdd, MdSettings} from "react-icons/all";
 import {QueueEditDialog} from "./QueueEditDialog";

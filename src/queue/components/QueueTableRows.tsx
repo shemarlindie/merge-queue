@@ -1,5 +1,5 @@
 import {query, where} from "firebase/firestore";
-import {Queue, QueueItem, QueueSection} from "./models";
+import {Queue, QueueItem, QueueSection} from "../models";
 import {AppBar, TableCell, TableRow, Toolbar, Typography} from "@mui/material";
 import {QueueTableRowsGrouped} from "./QueueTableRowsGrouped";
 import React, {ReactElement, useState} from "react";

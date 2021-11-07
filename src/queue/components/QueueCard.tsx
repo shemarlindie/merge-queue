@@ -1,4 +1,4 @@
-import {Queue} from "./models";
+import {Queue} from "../models";
 import {
   Button,
   Card,
@@ -13,11 +13,11 @@ import {
 import {QueueEditDialog} from "./QueueEditDialog";
 import React, {useState} from "react";
 import {BsThreeDotsVertical, MdDelete, MdEdit} from "react-icons/all";
-import {useTruncate} from "../../utils/useTruncate";
+import {useTruncate} from "../../utils/hooks/useTruncate";
 import {Link as RouterLink} from "react-router-dom";
-import {useConfirmDelete} from "../../utils/dialogs";
+import {useConfirmDelete} from "../../utils/hooks/useConfirmDelete";
 import {useSnackbar} from "notistack";
-import {QueueService} from "./queue-service";
+import {QueueService} from "../queue-service";
 
 export function QueueCard({queue}: { queue: Queue }) {
   const [showEditDialog, setShowEditDialog] = useState(false);
