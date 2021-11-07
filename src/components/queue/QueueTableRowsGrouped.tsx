@@ -27,7 +27,12 @@ const groupCompareFns: Partial<Record<keyof QueueItem, (a: string, b: string) =>
   qaAssignee: userProxyGroupCompareFn,
 };
 
-export function QueueTableRowsGrouped({queue, collectionRef, groupBy, tableConfig}: GroupedQueueItemsProps) {
+export function QueueTableRowsGrouped({
+                                        queue,
+                                        collectionRef,
+                                        groupBy,
+                                        tableConfig
+                                      }: GroupedQueueItemsProps) {
   const [itemCollection] = useCollection(collectionRef);
   const items = useMemo(() => itemCollection ? itemCollection.docs.map(doc => doc.data()) : [], [itemCollection]);
   const groupedItems = useMemo(
@@ -62,7 +67,8 @@ export function QueueTableRowsGrouped({queue, collectionRef, groupBy, tableConfi
           if (groupedItems[group].length) {
             elms.push(
               <TableRow key={group} className="bg">
-                <TableCell valign="bottom" component="th" colSpan={tableConfig.length}>
+                <TableCell valign="bottom" component="th"
+                           colSpan={tableConfig.length}>
                   <b>{group}</b>
                 </TableCell>
               </TableRow>
@@ -71,7 +77,8 @@ export function QueueTableRowsGrouped({queue, collectionRef, groupBy, tableConfi
 
           for (const row of groupedItems[group]) {
             elms.push(
-              <TableRow key={row.id} hover onClick={() => handleQueueItemEditDialogOpen(row)}>
+              <TableRow key={row.id} hover
+                        onClick={() => handleQueueItemEditDialogOpen(row)}>
                 {tableConfig.filter(el => !!el.field).map((col) => {
                   const transformer = col.transformer;
                   let fieldValue: any = transformer ? transformer(row[col.field!], col.field!, row) : row[col.field!];
@@ -81,7 +88,8 @@ export function QueueTableRowsGrouped({queue, collectionRef, groupBy, tableConfi
                   );
                 })}
                 <TableCell>
-                  <QueueTableRowMoreMenu queue={queue} task={row} onEdit={handleQueueItemEditDialogOpen}/>
+                  <QueueTableRowMoreMenu queue={queue} task={row}
+                                         onEdit={handleQueueItemEditDialogOpen}/>
                 </TableCell>
               </TableRow>
             );

@@ -1,16 +1,15 @@
-import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../components/auth/hooks/useAuth";
+import {Navigate, useLocation} from "react-router-dom";
+import {useAuth} from "../components/auth/hooks/useAuth";
 
 export function RequireAuth({children}: any) {
-  const {user} = useAuth()
-  const location = useLocation()
+  const {user} = useAuth();
+  const location = useLocation();
 
   if (user) {
-    return children
-  }
-  else {
-    const searchParams = new URLSearchParams({from: location.pathname}).toString()
-    const loginPath = `/login?${searchParams}`
-    return <Navigate to={loginPath} replace />
+    return children;
+  } else {
+    const searchParams = new URLSearchParams({from: location.pathname}).toString();
+    const loginPath = `/login?${searchParams}`;
+    return <Navigate to={loginPath} replace/>;
   }
 }

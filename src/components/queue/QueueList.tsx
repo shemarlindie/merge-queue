@@ -37,11 +37,13 @@ export function QueueList() {
             Create Queue
           </Button>
 
-          {showEditDialog && <QueueEditDialog open={showEditDialog} onClose={handleEditDialogClose}/>}
+          {showEditDialog && <QueueEditDialog open={showEditDialog}
+                                              onClose={handleEditDialogClose}/>}
         </div>
 
         {error && (
-          <div>Error loading queues: <span className="text-danger">{error}</span></div>
+          <div>Error loading queues: <span
+            className="text-danger">{error}</span></div>
         )}
 
         {loading && (
@@ -52,7 +54,8 @@ export function QueueList() {
         {!loading && queueList && (
           <div
             className="d-flex flex-sm-wrap flex-sm-row justify-content-sm-center align-items-sm-start flex-nowrap flex-column justify-content-start align-items-center">
-            {queueList.map((queue) => <QueueCard key={queue.id} queue={queue}/>)}
+            {queueList.map((queue) => <QueueCard key={queue.id}
+                                                 queue={queue}/>)}
           </div>
         )}
         {!loading && !queueList && (

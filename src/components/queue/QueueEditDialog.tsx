@@ -166,7 +166,8 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
       fullWidth
       keepMounted>
       <form onSubmit={formik.handleSubmit} autoComplete="off" noValidate>
-        <DialogTitle className="d-flex flex-row justify-content-between align-items-center">
+        <DialogTitle
+          className="d-flex flex-row justify-content-between align-items-center">
           <span>{queue ? "Edit" : "Create"} Queue</span>
           <IconButton onClick={handleCancel}><MdClose/></IconButton>
         </DialogTitle>
@@ -268,7 +269,8 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
           />
 
           <div className="mt-1">
-            <div className="d-flex flex-row justify-content-between align-items-center">
+            <div
+              className="d-flex flex-row justify-content-between align-items-center">
               <Typography variant="overline">Sections</Typography>
               <Button onClick={handleAddSectionRow}>Add Section</Button>
             </div>

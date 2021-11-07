@@ -33,13 +33,16 @@ export function QueueTableRows({queue, tableConfig}: QueueSectionRowsProps) {
       <TableRow key={section.name}>
         <TableCell padding="none" colSpan={tableConfig.length}>
           <AppBar position="relative">
-            <Toolbar variant="dense" className="d-flex flex-row justify-content-between">
-              <Typography variant="h6" color="inherit" component="div">{section.name}</Typography>
+            <Toolbar variant="dense"
+                     className="d-flex flex-row justify-content-between">
+              <Typography variant="h6" color="inherit"
+                          component="div">{section.name}</Typography>
 
               <div className="d-flex flex-row align-items-center">
                 <Typography variant={"caption"} color="inherit"
                             component="div">{groupConfig[section.name]}&nbsp; |</Typography>
-                <QueueTableGroupConfig config={groupConfig} section={section} onChange={handleChangeGroupConfig}/>
+                <QueueTableGroupConfig config={groupConfig} section={section}
+                                       onChange={handleChangeGroupConfig}/>
               </div>
             </Toolbar>
           </AppBar>
@@ -48,8 +51,10 @@ export function QueueTableRows({queue, tableConfig}: QueueSectionRowsProps) {
     );
 
     rows.push(
-      <QueueTableRowsGrouped key={section.name + "-group"} queue={queue} collectionRef={colRef}
-                             groupBy={groupConfig[section.name]} tableConfig={tableConfig}/>
+      <QueueTableRowsGrouped key={section.name + "-group"} queue={queue}
+                             collectionRef={colRef}
+                             groupBy={groupConfig[section.name]}
+                             tableConfig={tableConfig}/>
     );
   });
 

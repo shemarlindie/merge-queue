@@ -28,7 +28,8 @@ export function QueueManageHeader({queue}: { queue: Queue }) {
   };
 
   return (
-    <div className="border-bottom p-3 d-flex flex-column align-items-stretch flex-sm-row align-items-sm-center">
+    <div
+      className="border-bottom p-3 d-flex flex-column align-items-stretch flex-sm-row align-items-sm-center">
       <div className="flex-grow-1">
         <Typography variant="h6">{queue.name}</Typography>
         <Typography variant="body2">{queue.description}</Typography>
@@ -53,9 +54,11 @@ export function QueueManageHeader({queue}: { queue: Queue }) {
         </Button>
       </div>
 
-      {showEditDialog && <QueueEditDialog open={showEditDialog} queue={queue} onClose={handleEditDialogClose}/>}
+      {showEditDialog && <QueueEditDialog open={showEditDialog} queue={queue}
+                                          onClose={handleEditDialogClose}/>}
       {showQueueItemEditDialog &&
-      <QueueItemEditDialog open={showQueueItemEditDialog} queue={queue} onClose={handleQueueItemEditDialogClose}/>}
+      <QueueItemEditDialog open={showQueueItemEditDialog} queue={queue}
+                           onClose={handleQueueItemEditDialogClose}/>}
     </div>
   );
 }

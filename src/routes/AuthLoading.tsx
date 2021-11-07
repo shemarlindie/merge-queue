@@ -1,3 +1,3 @@
 export function AuthLoading() {
-  return <p>Loading auth...</p>
+  return <p>Loading auth...</p>;
 }
