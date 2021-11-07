@@ -7,6 +7,8 @@ A queue management app for organizing the order in which MRs are merged.
 
 https://merge-queue.shemarlindie.com
 
+[Screenshots](./screenshots)
+
 ## Deploy Checklist
 #### Prod
 - Create firebase project (pay-as-you-go)
