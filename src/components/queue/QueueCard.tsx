@@ -12,12 +12,12 @@ import {
 } from "@mui/material";
 import {QueueEditDialog} from "./QueueEditDialog";
 import React, {useState} from "react";
-import {updateDoc} from "firebase/firestore";
 import {BsThreeDotsVertical, MdDelete, MdEdit} from "react-icons/all";
 import {useTruncate} from "../../utils/useTruncate";
 import {Link as RouterLink} from "react-router-dom";
 import {useConfirmDelete} from "../../utils/dialogs";
 import {useSnackbar} from "notistack";
+import {QueueService} from "./queue-service";
 
 export function QueueCard({queue}: { queue: Queue }) {
   const [showEditDialog, setShowEditDialog] = useState(false);
@@ -46,7 +46,7 @@ export function QueueCard({queue}: { queue: Queue }) {
     handleMenuClose();
     confirmDelete(`${queue.name ? "The \"" + queue.name + "\"" : "This"} queue and all tasks will be deleted. Are you sure?`, "Delete Queue")
       .then(() => {
-        updateDoc(queue.documentRef(), {active: false})
+        QueueService.updateQueue(queue, {active: false})
           .then(() => {
             enqueueSnackbar("Queue was queued for deleted.");
           })

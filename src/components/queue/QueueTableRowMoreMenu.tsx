@@ -2,9 +2,9 @@ import {Queue, QueueItem} from "./models";
 import {MdMoreVert} from "react-icons/all";
 import {IconButton, Menu, MenuItem} from "@mui/material";
 import React, {useState} from "react";
-import {updateDoc} from "firebase/firestore";
 import {useSnackbar} from "notistack";
 import {useConfirmDelete} from "../../utils/dialogs";
+import {QueueService} from "./queue-service";
 
 interface QueueTableRowMoreMenuProps {
   queue: Queue;
@@ -40,7 +40,7 @@ export function QueueTableRowMoreMenu({queue, task, onEdit}: QueueTableRowMoreMe
       "Delete Merge Task"
     )
       .then(() => {
-        updateDoc(task.documentRef(), {active: false})
+        QueueService.updateQueueItem(task, {active: false})
           .then(() => {
             enqueueSnackbar("Merge task was queued for deletion.");
           })

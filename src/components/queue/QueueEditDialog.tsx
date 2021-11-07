@@ -12,19 +12,18 @@ import {
   useMediaQuery,
   useTheme
 } from "@mui/material";
-import {collection, doc as docRef, serverTimestamp, setDoc, updateDoc} from "firebase/firestore";
 import React, {useCallback, useState} from "react";
 import {useFormik} from "formik";
 import {groupByFields, Queue, queueValidationSchema} from "./models";
 import {LoadingButton} from "@mui/lab";
-import {auth, firestore} from "../../config/firebase-config";
 import {useSnackbar} from "notistack";
 import {MdClose} from "react-icons/all";
 import {useCollectionDataOnce} from "react-firebase9-hooks/firestore";
-import {makeUserProxy, makeUserProxyList} from "../auth/utils";
+import {makeUserProxyList} from "../auth/utils";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {addIndexIds} from "../../utils";
-import {v4 as uuid4} from "uuid";
+import {QueueService} from "./queue-service";
+import {AuthService} from "../auth/auth-service";
 
 export interface QueueEditDialogProps {
   open: boolean;
@@ -37,7 +36,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
   const {enqueueSnackbar} = useSnackbar();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [userList] = useCollectionDataOnce(collection(firestore, "users"));
+  const [userList] = useCollectionDataOnce(AuthService.usersCollectionRef());
   const users = makeUserProxyList(userList);
   const emptyOptions: string[] = [];
 
@@ -50,34 +49,22 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
     setSaving(true);
     try {
       if (queue) {
-        const data = {
-          ...values,
-          dateUpdated: serverTimestamp(),
-          updatedBy: auth.currentUser ? docRef(firestore, "users", auth.currentUser.uid) : null
-        };
-        await updateDoc(queue.documentRef(), data);
+        await QueueService.updateQueue(queue, values);
       } else {
-        const id = uuid4();
-        const data = {
-          ...values,
-          id: id,
-          dateCreated: serverTimestamp(),
-          createdBy: auth.currentUser ? docRef(firestore, "users", auth.currentUser.uid) : null
-        };
-        await setDoc(docRef(Queue.collectionRef(), id), data);
+        await QueueService.createQueue(values);
       }
       enqueueSnackbar("Queue saved.", {
         autoHideDuration: 5000, role: "alert"
       });
+      setSaving(false);
       onClose();
     } catch (e: any) {
+      setSaving(false);
       console.error("Error saving queue", e);
       enqueueSnackbar("Unable to save queue.", {
         autoHideDuration: 5000, variant: "error", role: "alert"
       });
     }
-
-    setSaving(false);
   };
 
   const initialValues = queue || {
@@ -86,7 +73,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
     clients: [],
     watchers: [],
     sections: [],
-    members: auth.currentUser ? [makeUserProxy(auth.currentUser)] : [],
+    members: AuthService.isAuthenticated() ? [AuthService.currentUserProxy()] : [],
     active: true,
   };
   initialValues.sections = addIndexIds(initialValues.sections);
@@ -97,7 +84,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
   });
 
   const handleSectionRowEdit = useCallback((params) => {
-    console.log("handleSectionRowEdit", params);
+    // console.log("handleSectionRowEdit", params);
     const updatedSections = formik.values.sections.map((el: any) => {
       if (el.id === params.id) {
         return params.row;
@@ -108,7 +95,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
   }, [formik]);
 
   const handleSectionRowCommit = useCallback((id, e) => {
-    console.log("handleSectionRowCommit id", id);
+    // console.log("handleSectionRowCommit id", id);
   }, []);
 
   const handleAddSectionRow = useCallback(() => {
@@ -215,7 +202,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
 
           <Autocomplete
             options={users}
-            getOptionLabel={(option) => option.displayName || ""}
+            getOptionLabel={(option) => option?.displayName || ""}
             multiple
             filterSelectedOptions
             disableCloseOnSelect
@@ -232,7 +219,7 @@ export function QueueEditDialog({onClose, open, queue}: QueueEditDialogProps) {
                 helperText="Members can be assigned tasks in queue."
               />
             )}
-            isOptionEqualToValue={(option, value) => option.uid === value.uid}
+            isOptionEqualToValue={(option, value) => option?.uid === value?.uid}
             value={formik.values.members}
             onChange={(e, val) => formik.setFieldValue("members", val)}
           />

@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
-import { doc as docRef, setDoc } from "firebase/firestore"
 
-import { auth, firebaseUiConfig, firestore } from '../../config/firebase-config'
+import { auth, firebaseUiConfig } from '../../config/firebase-config'
 import { StyledFirebaseAuth } from "react-firebaseui";
 import { useLocation, useNavigate } from "react-router-dom";
-import { makeUserProfile } from "./utils";
 import { Typography } from "@mui/material";
+import {AuthService} from "./auth-service";
 
 export function Login() {
   const location = useLocation()
@@ -17,7 +16,9 @@ export function Login() {
   useEffect(() => {
     return auth.onAuthStateChanged((user) => {
       if (user) {
-        setDoc(docRef(firestore, 'users', user.uid), makeUserProfile(user))
+        AuthService.saveProfile(user)
+          .then(_ => console.log('User profile saved.'))
+          .catch(e => console.error('Error saving user profile', e))
         navigate(params.get('from') || '/')
       }
     })
