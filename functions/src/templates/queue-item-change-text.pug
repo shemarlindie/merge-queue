@@ -1,8 +1,8 @@
-- var task = changedFields.latest
-- var queue = changedFields.queue
-- var created = changedFields.changeType.created
-- var updated = changedFields.changeType.updated
-- var deleted = changedFields.changeType.deleted
+- var task = changeSummary.latest
+- var queue = changeSummary.queue
+- var created = changeSummary.changeType.created
+- var updated = changeSummary.changeType.updated
+- var deleted = changeSummary.changeType.deleted
 
 if task.ticketNumber
   | The merge task for #{task.ticketNumber} was #{created ? "created in" : deleted ? "deleted from" : "updated in"} #{queue.name}.
@@ -14,7 +14,7 @@ else
 | #{task.description}
 | #{"\n"}
 
-each change, field in textDiff
+each field in changeSummary.fields
   | Field: #{field}
-  | Change: #{change}
+  | Change: #{created ? "Added: " + diff.after[field] : deleted ? "Removed: " + diff.before[field] : "Before: " + diff.before[field] + " | After: " + diff.after[field]}
   | #{"\n"}
