@@ -1,7 +1,7 @@
 # Merge Queue
 A queue management app for organizing the order in which MRs are merged.
 
-While working with a Clinc Inc., I developed an application to streamline development and project management processes in the context of the MR merge cycle.
+While working with Clinc Inc., I developed an application to streamline development and project management processes in the context of the MR merge cycle.
 
 ### Features:
 - Manage a queue of MRs to be merged
@@ -17,6 +17,13 @@ _This was a weekend project that was presented to the team and adopted as an in 
 https://merge-queue.shemarlindie.com
 
 [Screenshots](./screenshots)
+
+## Technologies
+- **React:** Frontend / UI
+- **Firebase Firestore:** Database
+- **Firebase Cloud Functions:** Database triggers and notification dispatch
+- **Sendgrid:** Email notifications
+- **TypeScript:** Programming language used to write UI logic and cloud functions
 
 ## Deploy Checklist
 #### Prod
