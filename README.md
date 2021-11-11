@@ -1,6 +1,15 @@
 # Merge Queue
 A queue management app for organizing the order in which MRs are merged.
 
+While working with a Clinc Inc., I developed an application to streamline development and project management processes in the context of the MR merge cycle.
+
+### Features:
+- Manage a queue of MRs to be merged
+- Easily update status and stages with autocomplete fields
+- Get notified when a merge task has changed or may require action
+
+_This was a weekend project that was presented to the team and adopted as an in internal tool._
+
 ![](./screenshots/task_list.png)
 
 ## Demo
