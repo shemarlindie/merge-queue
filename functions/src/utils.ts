@@ -14,13 +14,13 @@ export const stringFormatter: Formatter<string> = (value) => {
 };
 
 export const userComparer: Comparer<UserProxy> = (a, b) => {
-  return a && b ? a.uid === b.uid : a === b;
+  return a && b ? a.uid === b.uid : !(a || b);
 };
 
 export const typeComparer: Comparer<string[]> = (a, b) => {
-  return a && b ? typeFormatter(a) === typeFormatter(b) : a === b;
+  return a && b ? typeFormatter(a) === typeFormatter(b) : !(a || b);
 };
 
 export const stringComparer: Comparer<string> = (a, b) => {
-  return a === b;
+  return a && b ? a === b : !(a || b);
 };
