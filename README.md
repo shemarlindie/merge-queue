@@ -25,6 +25,10 @@ https://merge-queue.shemarlindie.com
 - **Sendgrid:** Email notifications
 - **TypeScript:** Programming language used to write UI logic and cloud functions
 
+## Testing
+
+Automated test development is in progress on the [sl/functions_tests](compare/sl/functions_tests) branch.
+
 ## Deploy Checklist
 #### Prod
 - Create firebase project (pay-as-you-go)
