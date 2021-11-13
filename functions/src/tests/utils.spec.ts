@@ -1,23 +1,16 @@
-import { expect } from "chai";
-import { describe, it } from "mocha";
-import { v4 as uuid4 } from "uuid";
-
-import { UserProxy } from "../models";
-import { Optional } from "../types";
+import {expect} from "chai";
+import {describe, it} from "mocha";
 import {
-  userComparer,
-  userFormatter,
-  typeComparer,
-  typeFormatter,
   stringComparer,
   stringFormatter,
+  typeComparer,
+  typeFormatter,
+  userComparer,
+  userFormatter,
 } from "../utils";
+import { userProxyStub } from "./shared";
 
 const falsyValues = [undefined, null];
-
-const userStub = (displayName: Optional<string>): UserProxy => {
-  return { uid: uuid4(), displayName };
-};
 
 describe("user formatter", () => {
   for (const fv of falsyValues) {
@@ -25,13 +18,13 @@ describe("user formatter", () => {
       expect(userFormatter(fv)).to.equal("-");
     });
     it(`should return '-' when user.displayName is ${fv}`, () => {
-      expect(userFormatter(userStub(fv))).to.equal("-");
+      expect(userFormatter(userProxyStub(fv))).to.equal("-");
     });
   }
 
-  const displayName = "Jane Doe";
   it("should return display name if present in user object", () => {
-    expect(userFormatter(userStub(displayName))).to.equal(displayName);
+    const displayName = "Jane Doe";
+    expect(userFormatter(userProxyStub(displayName))).to.equal(displayName);
   });
 });
 
@@ -70,21 +63,21 @@ describe("string formatter", () => {
 
 describe("user comparer", () => {
   it("should return false if one user is undefined", () => {
-    expect(userComparer(userStub("Jane Doe"), undefined)).to.be.false;
+    expect(userComparer(userProxyStub("Jane Doe"), undefined)).to.be.false;
   });
 
   it("should return false if one user is null", () => {
-    expect(userComparer(null, userStub("Jane Doe"))).to.be.false;
+    expect(userComparer(null, userProxyStub("Jane Doe"))).to.be.false;
   });
 
   it("should return false if users' uids don't match", () => {
-    const userA = userStub("Jane Doe");
-    const userB = userStub("John Doe");
+    const userA = userProxyStub("Jane Doe");
+    const userB = userProxyStub("John Doe");
     expect(userComparer(userA, userB)).to.be.false;
   });
 
   it("should return true if users' uids match", () => {
-    const userA = userStub("Jane Doe");
+    const userA = userProxyStub("Jane Doe");
     const userB = { uid: userA.uid, displayName: "Jane Twin" };
     expect(userComparer(userA, userB)).to.be.true;
   });

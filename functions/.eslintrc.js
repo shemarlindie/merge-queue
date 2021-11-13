@@ -30,4 +30,10 @@ module.exports = {
     "indent": ["error", 2],
     "object-curly-spacing": 0,
   },
+  overrides: [{
+    files: "./src/tests/**",
+    rules: {
+      "@typescript-eslint/no-explicit-any": 0,
+    },
+  }],
 };

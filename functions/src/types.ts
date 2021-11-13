@@ -45,3 +45,9 @@ export interface ChangeSummary {
   before: Partial<{ -readonly [key in keyof QueueItem]: QueueItem[key] }>;
   after: Partial<{ -readonly [key in keyof QueueItem]: QueueItem[key] }>;
 }
+
+export interface ChangeType {
+  created: boolean
+  deleted: boolean
+  updated: boolean
+}
