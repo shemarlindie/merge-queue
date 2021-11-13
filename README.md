@@ -27,7 +27,7 @@ https://merge-queue.shemarlindie.com
 
 ## Testing
 
-Automated test development is in progress on the [sl/functions_tests](compare/sl/functions_tests) branch.
+Automated test development is in progress on the [sl/functions_tests](./compare/sl/functions_tests) branch.
 
 ## Deploy Checklist
 #### Prod
