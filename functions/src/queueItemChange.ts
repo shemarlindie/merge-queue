@@ -12,7 +12,7 @@ import {
   userFormatter,
 } from "./utils";
 import {
-  ChangeSummary,
+  ChangeSummary, ChangeType,
   DocRef,
   FormattedChanges,
   Formatter,
@@ -30,7 +30,7 @@ const notificationsEnabled = functions.config().app.notifications === "true";
 
 const stringConfig = {comparer: stringComparer, formatter: stringFormatter};
 const userConfig = {comparer: userComparer, formatter: userFormatter};
-const watchedFields: Partial<WatchedFields> = {
+export const watchedFields: Partial<WatchedFields> = {
   basedOnVersion: stringConfig,
   description: stringConfig,
   developer: userConfig,
@@ -57,9 +57,9 @@ const watchedFields: Partial<WatchedFields> = {
  * @param {TaskChange} change
  * @return {Promise<Optional<UserProxy>>}
  */
-const getChangeUser = async (
+export const getChangeUser = async (
   change: TaskChange
-) => {
+): Promise<Optional<UserProxy>> => {
   const after = change.after.data();
   const userRef: Optional<DocRef> = (
     after?.updatedBy || after?.createdBy
@@ -68,11 +68,11 @@ const getChangeUser = async (
   return user && user.data() ? user.data() as UserProxy : undefined;
 };
 
-const getLatestChange = (change: TaskChange) => {
+export const getLatestChange = (change: TaskChange): QueueItem => {
   return (change.after.data() || change.before.data()) as QueueItem;
 };
 
-const getChangeType = (change: TaskChange) => {
+export const getChangeType = (change: TaskChange): ChangeType => {
   const created = !change.before.data();
   const deleted = !change.after.data();
   const updated = !!(change.before.data() && change.after.data());
@@ -80,7 +80,9 @@ const getChangeType = (change: TaskChange) => {
   return {created, updated, deleted};
 };
 
-const computeChangedFields = (change: TaskChange) => {
+export const computeChangedFields = (
+  change: TaskChange
+): (keyof WatchedFields)[] => {
   let changed: (keyof WatchedFields)[];
   const before = change.before.data();
   const after = change.after.data();
@@ -269,18 +271,16 @@ const sendEmail = async (change: TaskChange) => {
   return true;
 };
 
-const hook = (change: TaskChange) => {
+export const hook = (change: TaskChange): Promise<void> => {
   if (notificationsEnabled) {
     return sendEmail(change);
   } else {
     console.log("Notifications are disabled.");
   }
 
-  return true;
+  return Promise.resolve();
 };
 
-const queueItemChange = functions.firestore
+export const queueItemChange = functions.firestore
   .document("queues/{queueId}/items/{itemId}")
   .onWrite(hook);
-
-export {queueItemChange};
