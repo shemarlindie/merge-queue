@@ -223,16 +223,72 @@ describe("prepareEmailBody", () => {
   });
 });
 
-// describe("getRecipients", () => {
-//   it(
-//     "should return a list of previous and current assignee emails " +
-//     "and queue watchers' emails",
-//     async () => {
-//       const expected: string[] = [];
-//       const summary = summaryStub();
-//       const change = changeStub();
-//       const recipients = await fn.getRecipients(summary, change);
-//       expect(recipients).to.have.members(expected);
-//     }
-//   );
-// });
+describe("getRecipients", () => {
+  it("should return a list of email recipients for a change",
+    async () => {
+      // expect emails of 'before' assignees, 'after' assignees, queue watchers
+      // exclude email of user who made change
+      const expected: string[] = [
+        // before
+        "michael.doe@example.com",
+        "michelle.doe@example.com",
+        "isaac.doe@example.com",
+        // after
+        // "jane.doe@example.com", // updatedBy - developer
+        "john.doe@example.com",
+        "sasha.doe@example.com",
+        // watcher
+        "marcus.doe@example.com",
+      ];
+      const summary: ChangeSummary = {
+        changeType: {created: false, updated: true, deleted: false},
+        latest: queueItems[2],
+        queue: queues[0],
+        user: users[0],
+        fields: ["developer", "reviewer", "qaAssignee"],
+        before: {
+          developer: {
+            uid: "id-michael-doe",
+            displayName: "Michael Doe",
+            email: "michael.doe@example.com",
+          },
+          reviewer: {
+            uid: "id-michelle-doe",
+            displayName: "Michelle Doe",
+            email: "michelle.doe@example.com",
+          },
+          qaAssignee: {
+            uid: "id-isaac-doe",
+            displayName: "Isaac Doe",
+            email: "isaac.doe@example.com",
+          },
+        },
+        after: {
+          developer: {
+            uid: "id-jane-doe",
+            displayName: "Jane Doe",
+            email: "jane.doe@example.com",
+          },
+          reviewer: {
+            uid: "id-john-doe",
+            displayName: "John Doe",
+            email: "john.doe@example.com",
+          },
+          qaAssignee: {
+            uid: "id-sasha-doe",
+            displayName: "Sasha Doe",
+            email: "sasha.doe@example.com",
+          },
+        },
+      };
+      const change = makeChange(
+        changedTasks[2].before,
+        Object.assign(changedTasks[2].after, {
+          updatedBy: firestore.doc(`users/${users[0].uid}`),
+        })
+      );
+      const recipients = await fn.getRecipients(summary, change);
+      expect(recipients).to.have.members(expected);
+    }
+  );
+});
