@@ -104,7 +104,9 @@ export const computeChangedFields = (
   return changed;
 };
 
-const getChangeSummary = async (change: TaskChange) => {
+export const getChangeSummary = async (
+  change: TaskChange
+): Promise<Optional<ChangeSummary>> => {
   const fields = computeChangedFields(change);
 
   if (fields.length) {
@@ -133,7 +135,9 @@ const getChangeSummary = async (change: TaskChange) => {
   return null;
 };
 
-const formatChanges = (changeSummary: ChangeSummary) => {
+export const formatChanges = (
+  changeSummary: ChangeSummary
+): FormattedChanges => {
   const formatted: FormattedChanges = {before: {}, after: {}};
 
   for (const key of changeSummary.fields) {
@@ -148,7 +152,9 @@ const formatChanges = (changeSummary: ChangeSummary) => {
   return formatted;
 };
 
-const prepareEmailBody = async (changeSummary: ChangeSummary) => {
+export const prepareEmailBody = async (
+  changeSummary: ChangeSummary
+): Promise<{html: string, text: string}> => {
   const diff = formatChanges(changeSummary);
   const tmplDir = path.join(__dirname, "..", "src", "templates");
   const body = {html: "", text: ""};
@@ -169,9 +175,9 @@ const prepareEmailBody = async (changeSummary: ChangeSummary) => {
   return body;
 };
 
-const getRecipients = async (
+export const getRecipients = async (
   changeSummary: ChangeSummary, change: TaskChange
-) => {
+): Promise<string[]> => {
   const recipientFields = ["developer", "reviewer", "qaAssignee"];
   const recipients = new Set<string>();
 

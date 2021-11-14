@@ -1,0 +1,39 @@
+[
+  {
+    "id": "1",
+    "active": true,
+    "name": "Queue 1",
+    "description": "Lorem ipsum dolor",
+    "clients": ["Client A", "Client B"],
+    "sections": ["QA", "Main"],
+    "members": [
+      {
+        "uid": "id-jane-doe",
+        "displayName": "Jane Doe",
+        "email": "jane.doe@example.com"
+      },
+      {
+        "uid": "id-john-doe",
+        "displayName": "John Doe",
+        "email": "john.doe@example.com"
+      },
+      {
+        "uid": "id-sasha-doe",
+        "displayName": "Sasha Doe",
+        "email": "sasha.doe@example.com"
+      },
+      {
+        "uid": "id-amy-doe",
+        "displayName": "Amy Doe",
+        "email": "amy.doe@example.com"
+      }
+    ],
+    "watchers": [
+      {
+        "uid": "id-marcus-doe",
+        "displayName": "Marcus Doe",
+        "email": "marcus.doe@example.com"
+      }
+    ]
+  }
+]

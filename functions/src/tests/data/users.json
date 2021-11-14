@@ -13,5 +13,30 @@
     "uid": "id-sasha-doe",
     "displayName": "Sasha Doe",
     "email": "sasha.doe@example.com"
+  },
+  {
+    "uid": "id-marcus-doe",
+    "displayName": "Marcus Doe",
+    "email": "marcus.doe@example.com"
+  },
+  {
+    "uid": "id-amy-doe",
+    "displayName": "Amy Doe",
+    "email": "amy.doe@example.com"
+  },
+  {
+    "uid": "id-michael-doe",
+    "displayName": "Michael Doe",
+    "email": "michael.doe@example.com"
+  },
+  {
+    "uid": "id-michelle-doe",
+    "displayName": "Michelle Doe",
+    "email": "michelle.doe@example.com"
+  },
+  {
+    "uid": "id-isaac-doe",
+    "displayName": "Isaac Doe",
+    "email": "isaac.doe@example.com"
   }
 ]
