@@ -1,4 +1,5 @@
 import * as admin from "firebase-admin";
+import {Optional} from "./types";
 
 export interface UserProxy {
   uid: string;
@@ -15,9 +16,9 @@ export interface QueueItem {
   type: string[]
   jiraPriority: string
   priority: string
-  developer?: UserProxy
-  reviewer?: UserProxy
-  qaAssignee?: UserProxy
+  developer?: Optional<UserProxy>
+  reviewer?: Optional<UserProxy>
+  qaAssignee?: Optional<UserProxy>
   ticketNumber: string
   basedOnVersion: string
   mrLink: string

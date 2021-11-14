@@ -1,8 +1,8 @@
 [
   {
     "before": {
-      "id": "0",
-      "queueId": "0",
+      "id": "1",
+      "queueId": "1",
       "section": "",
       "description": "",
       "status": "",
@@ -21,8 +21,8 @@
       "active": false
     },
     "after": {
-      "id": "0",
-      "queueId": "0",
+      "id": "1",
+      "queueId": "1",
       "section": "Main",
       "description": "Lorem ipsum dolor",
       "status": "Pending",
@@ -57,7 +57,7 @@
   },
   {
     "before": {
-      "id": "1",
+      "id": "2",
       "queueId": "1",
       "section": "",
       "description": "",
@@ -77,15 +77,22 @@
       "active": false
     },
     "after": {
-      "id": "1",
+      "id": "2",
       "queueId": "1",
       "section": "",
-      "description": "Lorem ipsum dolor",
+      "description": "Lokg ueowi clodp",
       "status": "",
-      "type": [],
+      "type": [
+        "CLF Improve",
+        "SVP Improve"
+      ],
       "jiraPriority": "",
       "priority": "",
-      "developer": null,
+      "developer": {
+        "uid": "id-jane-doe",
+        "displayName": "Jane Doe",
+        "email": "jane.doe@example.com"
+      },
       "reviewer": null,
       "qaAssignee": null,
       "ticketNumber": "MQ-102",
@@ -95,6 +102,72 @@
       "client": "",
       "notes": "",
       "active": false
+    }
+  },
+  {
+    "before": {
+      "id": "3",
+      "queueId": "1",
+      "section": "Main",
+      "description": "Email recipients test before",
+      "status": "",
+      "type": [],
+      "jiraPriority": "",
+      "priority": "",
+      "developer": {
+        "uid": "id-michael-doe",
+        "displayName": "Michael Doe",
+        "email": "michael.doe@example.com"
+      },
+      "reviewer": {
+        "uid": "id-michelle-doe",
+        "displayName": "Michelle Doe",
+        "email": "michelle.doe@example.com"
+      },
+      "qaAssignee": {
+        "uid": "id-isaac-doe",
+        "displayName": "Isaac Doe",
+        "email": "isaac.doe@example.com"
+      },
+      "ticketNumber": "",
+      "basedOnVersion": "",
+      "mrLink": "",
+      "mrLink2": "",
+      "client": "",
+      "notes": "",
+      "active": true
+    },
+    "after": {
+      "id": "3",
+      "queueId": "1",
+      "section": "Main",
+      "description": "Email recipients test after",
+      "status": "",
+      "type": [],
+      "jiraPriority": "",
+      "priority": "",
+      "developer": {
+        "uid": "id-jane-doe",
+        "displayName": "Jane Doe",
+        "email": "jane.doe@example.com"
+      },
+      "reviewer": {
+        "uid": "id-john-doe",
+        "displayName": "John Doe",
+        "email": "john.doe@example.com"
+      },
+      "qaAssignee": {
+        "uid": "id-sasha-doe",
+        "displayName": "Sasha Doe",
+        "email": "sasha.doe@example.com"
+      },
+      "ticketNumber": "",
+      "basedOnVersion": "",
+      "mrLink": "",
+      "mrLink2": "",
+      "client": "",
+      "notes": "",
+      "active": true
     }
   }
 ]

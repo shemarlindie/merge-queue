@@ -8,12 +8,16 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "firebase emulators:exec 'mocha -r ts-node/register src/tests/**/*.spec.ts'"
+    "test": "firebase emulators:exec 'nyc mocha -r ts-node/register src/tests/**/*.spec.ts'",
+    "test-interactive": "mocha -r ts-node/register -r dotenv/config src/tests/**/*.spec.ts"
   },
   "engines": {
     "node": "14"
   },
   "main": "lib/index.js",
+  "nyc": {
+    "exclude": "src/tests/**"
+  },
   "dependencies": {
     "@sendgrid/mail": "^7.6.0",
     "email-templates": "^8.0.8",
