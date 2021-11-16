@@ -6,6 +6,7 @@ While working with Clinc Inc., I developed an application to streamline developm
 ### Features:
 - Manage a queue of MRs to be merged
 - Easily update status and stages with autocomplete fields
+- Dynamic task grouping based on key fields
 - Get notified when a merge task has changed or may require action
 
 _This was a weekend project that was presented to the team and adopted as an in internal tool._
