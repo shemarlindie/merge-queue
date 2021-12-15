@@ -26,6 +26,9 @@
     },
     "ui": {
       "enabled": true
+    },
+    "hosting": {
+      "port": 5002
     }
   },
   "hosting": {
