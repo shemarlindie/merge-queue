@@ -50,6 +50,10 @@ export function QueueTableRowsGrouped({
   const [showQueueItemEditDialog, setShowQueueItemEditDialog] = useState(false);
   const [selectedQueueItem, setSelectedQueueItem] = useState<QueueItem | undefined>(undefined);
   const handleQueueItemEditDialogOpen = (task: QueueItem) => {
+    // prevent dialog open when selecting row text
+    const selection = window.getSelection();
+    if (selection && selection.toString().length) return
+
     setSelectedQueueItem(task);
     setShowQueueItemEditDialog(true);
   };
