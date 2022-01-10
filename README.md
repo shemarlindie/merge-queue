@@ -20,34 +20,80 @@ https://merge-queue.shemarlindie.com
 [Screenshots](./screenshots)
 
 ## Technologies
-- **React:** Frontend / UI
-- **Firebase Firestore:** Database
-- **Firebase Cloud Functions:** Database triggers and notification dispatch
-- **Sendgrid:** Email notifications
-- **TypeScript:** Programming language used to write UI logic and cloud functions
+- **[React](https://reactjs.org):** Frontend / UI
+- **[Firebase Firestore](https://firebase.google.com/docs/firestore):** Database
+- **[Firebase Cloud Functions](https://firebase.google.com/docs/functions):** Database triggers and notification dispatch
+- **[Sendgrid](https://sendgrid.com):** Email notifications
+- **[TypeScript](https://www.typescriptlang.org):** Programming language used to write UI logic and cloud functions
 
 ## Testing
 
 Automated test development is in progress on the [sl/functions_tests](https://github.com/shemarlindie/merge-queue/compare/sl/functions_tests) branch.
 
-## Deploy Checklist
-#### Prod
-- Create firebase project (pay-as-you-go)
-- Enable authentication (google provider), cloud firestore, cloud functions, hosting (visit each tab)
-- Create web app in firebase project
-- Set up `.firebaserc` with firebase project id based on `.firebaserc.example`
-- Set up `.env.local` with firebase web app config based on `.env.example`
-- Set up sendgrid account with sender authentication
-- Create sendgrid api key
-- Configure sendgrid api key `firebase functions:config:set sendgrid.key=<key>`
-- Configure "from" email `firebase functions:config:set sendgrid.from=<from email address>`
-- Enable notifications `firebase functions:config:set app.notifications=true`
+## Project Setup
+
+### Requirements
+- [Node.js](https://nodejs.org/)
+- [Firebase CLI](https://firebase.google.com/docs/cli)
+- [Java Runtime Environment](https://www.oracle.com/java/technologies/downloads/) (required to run [Firebase Emulators](https://firebase.google.com/docs/emulator-suite))
+
+### Project Structure
+
+The main project structure was created by [Create React App](https://create-react-app.dev) with a few additions for Firebase.
+
+#### React
+- `./src`: React frontend code
+- `package.json`: dependencies for frontend
+- `.env.example`: example ENV config for frontend
+- `.env.local`: local ENV config for frontend (created per developer / not committed)
+
+#### Firebase
+- `.firebaserc.example`: example Firebase project config for the CLI
+- `.firebaserc`: local Firebase project config for the CLI (created per developer / not committed)
+- `firebase.json`: various configs for firebase modules
+- `firestore.indexes.json`: config for [Firestore indexing](https://firebase.google.com/docs/firestore/query-data/indexing)
+- `firestore.rules`: config for [Firestore rules](https://firebase.google.com/docs/firestore/security/get-started)
+- `./functions`: Functions backend code
+
+### Firebase Config
+
+1. Create Firebase project ([pay-as-you-go](https://firebase.google.com/pricing) plan)
+2. Enable the following services (visit each tab and click "Enable" if necessary):
+   - Authentication (Google sign-in provider)
+   - Firestore Database
+   - Functions
+   - Hosting
+3. Create a web app config in project settings (needed for the next step). It should include:
+   - Project ID
+   - API Key
+   - Other credentials / config
+
+### Project Config
+1. Create `.firebaserc` from `.firebaserc.example` and add project ID:
+   - Lets the Firebase CLI interact with your project
+2. Create `.env.local` from `.env.example` and add web app config
+   - Used to configure Firebase in the React app 
+3. Log in with the Firebase CLI: `firebase login`
+4. Activate the `default` project (as configured in `.firebaserc`): `firebase use default`
+
+### Sendgrid Config
+1. Create Sendgrid account and configure [sender authentication](https://docs.sendgrid.com/ui/account-and-settings/how-to-set-up-domain-authentication)
+2. Create [API key](https://docs.sendgrid.com/ui/account-and-settings/api-keys)
+3. Configure Sendgrid variables in Firebase project:
+   - API key: `firebase functions:config:set sendgrid.key=<key>`
+   - "from" email address: `firebase functions:config:set sendgrid.from=<from email address>`
+   - Enable notifications: `firebase functions:config:set app.notifications=true`
+
+### Deployment
 - Deploy to firebase: `firebase deploy`
 
-#### Dev
-- Setup function emulation config file (`.runtimeconfig.json`) in `./functions` using `.runtimeconfig.example.json`
-- Start emulators: `firebase emulators:start`
-- Start frontend: `npm start`
+### Run Locally
+1. Install NPM packages (`npm install`) in the following directories:
+   - `./`
+   - `./functions`
+2. Create function emulation config file (`./functions/.runtimeconfig.json`) from `./functions/.runtimeconfig.example.json`
+3. Start emulators: `firebase emulators:start`
+4. Start frontend: `npm start`
 
 
 # Getting Started with Create React App
