@@ -54,6 +54,7 @@ The main project structure was created by [Create React App](https://create-reac
 - `firestore.indexes.json`: config for [Firestore indexing](https://firebase.google.com/docs/firestore/query-data/indexing)
 - `firestore.rules`: config for [Firestore rules](https://firebase.google.com/docs/firestore/security/get-started)
 - `./functions`: Functions backend code
+- `./functions/package.json`: dependencies for backend
 
 ### Firebase Config
 
